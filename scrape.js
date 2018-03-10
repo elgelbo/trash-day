@@ -4,3 +4,5 @@ try {
 } catch (e) {
   console.error(`Something went wrong: ${e.message}`);
 }
+
+console.log('trashed');
