@@ -12,7 +12,7 @@ express()
 
 console.log('yo');
 
-cron.schedule('0 */37 16 * * *', function(){
+cron.schedule('0 */45 16 * * *', function(){
   console.log('FETCHING DATE ON SCHEDULE');
   // getDate();
 });
