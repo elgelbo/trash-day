@@ -60,11 +60,13 @@ const getDate = async (req, res, next) => {
     await page.keyboard.type('92116');
     await page.click('input[type="submit"]');
     await page.waitForNavigation({
-      waitUntil: 'networkidle0'
+      waitUntil: 'networkidle',
+      timeout: 3000000
     });
     await page.click('input[type="submit"]');
     await page.waitForNavigation({
-      waitUntil: 'networkidle0'
+      waitUntil: 'networkidle',
+      timeout: 3000000
     });
     console.log(page.url())
     const tDate = await page.evaluateHandle(() => document.querySelector('body > table:nth-child(8) > tbody > tr > td > table > tbody > tr > td > table:nth-child(2) > tbody > tr:nth-child(2) > td:nth-child(4)').textContent);
