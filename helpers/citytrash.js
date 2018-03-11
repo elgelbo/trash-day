@@ -42,9 +42,7 @@ exports.checkDate = async (req, res, next) => {
   }
 }
 const getDate = async (req, res, next) => {
-  const browser = await puppeteer.launch({
-    headless: false
-  });
+  const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
   try {
     const page = await browser.newPage();
     await page.goto(url, {

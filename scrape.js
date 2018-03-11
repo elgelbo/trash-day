@@ -4,7 +4,7 @@ const storage = require('node-persist');
 
 const url = 'https://apps.sandiego.gov/econtainer/control/searchaddressinfo';
 
-exports.checkDate = async (req, res, next) => {
+var checkDate = async () => {
   const now = moment();
   try {
     await storage.init().then(function() {
@@ -12,37 +12,39 @@ exports.checkDate = async (req, res, next) => {
         .then(function(value) {
           if(!value) {
             storage.setItem('trash', now);
-            req.tDate = now.toISOString();
+            return tDate = now.toISOString();
           } else {
-            req.tDate = value;
+            return tDate = value;
           }
         });
       storage.getItem('recycling')
         .then(function(value) {
           if(!value) {
             storage.setItem('recycling', now);
-            req.rDate = now.toISOString();
+            return rDate = now.toISOString();
           } else {
-            req.rDate = value;
+            return rDate = value;
           }
         });
     });
-    const check = now.isBefore(req.tDate);
+    const check = now.isBefore(tDate);
     if (check === true) {
       console.log('The time is currently:', now.format("dddd, MMMM Do YYYY, h:mm:ss a"));
-      console.log('Trash day has not happened. It is on: ', moment(req.tDate).format("dddd, MMMM Do YYYY"));
+      console.log('Trash day has not happened. It is on: ', moment(tDate).format("dddd, MMMM Do YYYY"));
     } else {
       console.log('The time is currently:', now.format("dddd, MMMM Do YYYY, h:mm:ss a"));
       console.log('Updating trash day...');
+      getDate();
     }
   } catch (e) {
     console.log(e);
   }
 }
-const getDate = async (req, res, next) => {
-  const browser = await puppeteer.launch({
-    headless: false
-  });
+
+checkDate();
+
+const getDate = async () => {
+  const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
   try {
     const page = await browser.newPage();
     await page.goto(url, {
@@ -88,8 +90,6 @@ const getDate = async (req, res, next) => {
           console.log('Recycling day updated: ', value);
         });
     });
-    req.tDate = trashD;
-    req.rDate = recyD;
     await browser.close();
   } catch (e) {
     console.log(e);
