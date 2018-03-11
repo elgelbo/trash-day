@@ -62,12 +62,12 @@ const getDate = async () => {
     await page.keyboard.type('92116');
     await page.click('input[type="submit"]');
     await page.waitForNavigation({
-      waitUntil: 'networkidle',
+      waitUntil: 'networkidle2',
       timeout: 3000000
     });
     await page.click('input[type="submit"]');
     await page.waitForNavigation({
-      waitUntil: 'networkidle',
+      waitUntil: 'networkidle2',
       timeout: 3000000
     });
     console.log(page.url())
