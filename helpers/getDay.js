@@ -88,20 +88,22 @@ message = async (data) => {
         const message = "Trash day is tomorrow! No recycling...";
       }
       await email.sendEmail(message);
+      return message;
     } else if (tillTrash < -1) {
       if (data.recycling.isTrue === true) {
         const message = `Trash day is ${
         data.trash.fromNow
       }. Don't forget the recycling!`;
-        console.log(message);
-        return message;
+      return message;
       } else {
         const message = `Trash day is ${
         data.trash.fromNow
       }. No recycling this week.`;
+      return message;
       }
     }
   } else {
+    // TODO
     console.log("Holiday");
   }
 };

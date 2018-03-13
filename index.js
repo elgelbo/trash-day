@@ -25,6 +25,6 @@ express()
   .set('view engine', 'ejs')
   .get('/', citytrash.checkDate)
   .get('/', (req, res) => {
-    res.render('pages/index', {Dates: {trash: req.tDate, recycling: req.rDate}, text: {trash: 'trash text', recycling: 'recy text'}});
+    res.render('pages/index', {Dates: req.body.data});
   })
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))

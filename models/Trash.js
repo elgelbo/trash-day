@@ -3,6 +3,7 @@ mongoose.Promise = global.Promise;
 
 var trashSchema = new mongoose.Schema({
   name: String,
+  message: String,
   trash: {
     date: String,
     iso: Date,
