@@ -73,7 +73,6 @@ const getDate = async (req, res, next) => {
     const rDate = await page.evaluateHandle(() => document.querySelector('body > table:nth-child(8) > tbody > tr > td > table > tbody > tr > td > table:nth-child(2) > tbody > tr:nth-child(3) > td:nth-child(4)').textContent);
     const trashD = moment(tDate._remoteObject.value, "MM-DD-YYYY").toISOString();
     const recyD = moment(rDate._remoteObject.value, "MM-DD-YYYY").toISOString();
-    console.log(trashD, recyD);
     await storage.init().then(function() {
       storage.setItem('trash', trashD)
         .then(function() {

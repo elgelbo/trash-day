@@ -1,8 +1,20 @@
 const express = require('express')
+require('dotenv').config( { path: 'variables.env'});
+const mongoose = require('mongoose');
 const path = require('path')
 const bodyParser = require('body-parser');
 const citytrash = require('./helpers/citytrash');
 const PORT = process.env.PORT || 5000
+
+// DB CONNECTION
+mongoose.connect(process.env.MONGODB_URI).then(
+  () => { console.log('Mongoose default connection open.') },
+  err => { console.error(`err message ${err.message}`)}
+); // see mognoose callback on connect: http://mongoosejs.com/docs/connections.html#callback
+mongoose.Promise = global.Promise; //USE ES6 PROMISES see:http://mongoosejs.com/docs/promises.html#plugging-in-your-own-promises-library
+
+require('./models/Trash');
+
 express()
   .use(express.static(path.join(__dirname, 'public')))
   .use(bodyParser.json())

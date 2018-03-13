@@ -1,7 +1,7 @@
 {
-  "name": "node-js-getting-started",
-  "version": "0.3.0",
-  "description": "A sample Node.js app using Express 4",
+  "name": "trash-day",
+  "version": "2.0.0",
+  "description": "Scrape + Notify",
   "engines": {
     "node": "8.9.1"
   },
@@ -12,24 +12,26 @@
   },
   "dependencies": {
     "body-parser": "^1.18.2",
+    "dotenv": "^5.0.1",
     "ejs": "^2.5.6",
     "express": "^4.15.2",
     "moment": "^2.21.0",
+    "moment-timezone": "^0.5.14",
+    "mongoose": "^5.0.9",
     "node-persist": "^2.1.0",
+    "nodemailer": "^4.6.2",
     "puppeteer": "^1.1.1"
   },
   "devDependencies": {
     "request": "^2.81.0",
     "tape": "^4.7.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/heroku/node-js-getting-started"
-  },
   "keywords": [
     "node",
     "heroku",
-    "express"
+    "express",
+    "puppeteer",
+    "nodemailer"
   ],
   "license": "MIT"
 }
