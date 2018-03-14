@@ -94,11 +94,13 @@ message = async (data) => {
         const message = `Trash day is ${
         data.trash.fromNow
       }. Don't forget the recycling!`;
+      await email.sendEmail(message);
       return message;
       } else {
         const message = `Trash day is ${
         data.trash.fromNow
       }. No recycling this week.`;
+      await email.sendEmail(message);
       return message;
       }
     }

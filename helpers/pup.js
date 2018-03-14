@@ -11,8 +11,8 @@ const url = 'https://apps.sandiego.gov/econtainer/control/searchaddressinfo';
 
 pupDate = async (name) => {
 // console.log(name);
-  // const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
-  const browser = await puppeteer.launch({headless: false});
+  const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
+  // const browser = await puppeteer.launch({headless: false});
   console.log('i am the pup');
 
   try {
