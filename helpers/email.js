@@ -16,12 +16,12 @@ var sendEmail = (message) => {
 
   // setup email data with unicode symbols
   const mailOptions = {
-      from: '"👻" <mgelbman@gmail.com>', // sender address
-      to: 'mgelbman@gmail.com', // list of receivers
-      subject: 'Trash Day is Tomorrow 💩 💩 💩 💩 💩', // Subject line
-      text:message, // plain text body
+      from: '"💩 💩 💩 💩 💩" <mgelbman@gmail.com>', // sender address
+      to: 'mgelbman@gmail.com, erutel@gmail.com', // list of receivers
+      subject: `${message}` + '💩 💩 💩 💩 💩', // Subject line
+      text: message, // plain text body
       html: '<html lang="en"><head>'+
-'  <title>'+ `${message}` +'</title>'+
+'  <title>'+ `${message}` + '💩 💩 💩 💩 💩'+'</title>'+
 '  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />'+
 '  <meta name="viewport" content="width=device-width, initial-scale=1">'+
 '  <meta http-equiv="X-UA-Compatible" content="IE=edge" />'+
@@ -79,7 +79,7 @@ var sendEmail = (message) => {
 '          <img alt="placeholder image" src="https://source.unsplash.com/YzSZN3qvHeo/1200x600" height="300" width="600" style="background-color: black; color: white; display: block; font-family: sans-serif; font-size: 18px; font-weight: bold; height: auto; max-width: 100%; text-align: center; width: 100%;">'+
 '          <p style="margin: 30px 0 30px 0;">Hey there! Dont\' forget that trash day is coming up. Please remember to take the cans out. You can always check to find out when trash day is and if it is a recycling week. </p>'+
 '          <p style="margin: 30px 0 30px 0; text-align: center;">'+
-'            <a href="https://nameless-earth-69870.herokuapp.com/" target="_blank" style="font-size: 18px; font-family: sans-serif; color: #ffffff; text-decoration: none; border-radius: 8px; -webkit-border-radius: 8px; background-color: dodgerblue; border-top: 20px solid dodgerblue; border-bottom: 18px solid dodgerblue; border-right: 40px solid dodgerblue; border-left: 40px solid dodgerblue; display: inline-block;">Check Trash Day →</a>'+
+'            <a href="https://trashday.herokuapp.com/" target="_blank" style="font-size: 18px; font-family: sans-serif; color: #ffffff; text-decoration: none; border-radius: 8px; -webkit-border-radius: 8px; background-color: dodgerblue; border-top: 20px solid dodgerblue; border-bottom: 18px solid dodgerblue; border-right: 40px solid dodgerblue; border-left: 40px solid dodgerblue; display: inline-block;">Check Trash Day →</a>'+
 '          </p>'+
 '        </article>'+
 '      </td>'+
