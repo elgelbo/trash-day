@@ -1,4 +1,6 @@
-require('dotenv').config( { path: 'variables.env'});
+require('dotenv').config({
+  path: 'variables.env'
+});
 const mongoose = require('mongoose');
 require('../models/Trash');
 const Trash = mongoose.model('Trash');
@@ -9,8 +11,10 @@ var moment = require('moment');
 const pup = require('./pup');
 
 getDaybyName = async (name) => {
-  const Name = await Trash.findOne({name});
-  if(!Name) {
+  const Name = await Trash.findOne({
+    name
+  });
+  if (!Name) {
     console.log('Could not find a trash day.');
     return scrapeDay();
   }
@@ -19,7 +23,7 @@ getDaybyName = async (name) => {
 
 currentDay = async (data) => {
   const now = moment();
-console.log(data);
+  console.log(data);
   // const trashDay = moment('2018-03-05T00:00:00.000Z');
   const trashDay = moment(data.trash.date);
   const check = moment().isBefore(trashDay);
@@ -51,25 +55,43 @@ processMoment = async (name, t, r) => {
     const trash = new Trash;
     trash.name = 'mytrashday';
     trash.trash.date = t,
-    trash.recycling.date = r
+      trash.recycling.date = r
     const data = await trash.save();
     return data;
   } else {
-    const data = await Trash.findOneAndUpdate({ name: name }, {
+    const data = await Trash.findOneAndUpdate({
+      name: name
+    }, {
       'trash.date': t,
       'trash.iso': moment(t).toISOString(),
       'trash.day': moment(t).format("dddd"),
       'trash.daysTill': tDayTill,
       'trash.hrsTill': tHr,
-      'trash.fromNow': moment(t).fromNow(),
+      'trash.fromNow': moment(t).calendar(null, {
+        sameDay: '[Today]',
+        nextDay: '[Tomorrow]',
+        nextWeek: 'dddd',
+        lastDay: '[Yesterday]',
+        lastWeek: '[Last] dddd',
+        sameElse: 'DD/MM/YYYY'
+      }),
       'recycling.date': r,
       'recycling.iso': moment(r).toISOString(),
       'recycling.day': moment(r).format("dddd"),
       'recycling.daysTill': rDayTill,
       'recycling.hrsTill': rHr,
-      'recycling.fromNow': moment(r).fromNow(),
+      'recycling.fromNow': moment(r).calendar(null, {
+        sameDay: '[Today]',
+        nextDay: '[Tomorrow]',
+        nextWeek: 'dddd',
+        lastDay: '[Yesterday]',
+        lastWeek: '[Last] dddd',
+        sameElse: 'DD/MM/YYYY'
+      }),
       'recycling.isTrue': both
-    }, {new: true}).exec();
+    }, {
+      new: true
+    }).exec();
     return data;
   }
 };
@@ -94,14 +116,12 @@ message = async (data) => {
         const message = `Trash day is ${
         data.trash.fromNow
       }. Don't forget the recycling!`;
-      await email.sendEmail(message);
-      return message;
+        return message;
       } else {
         const message = `Trash day is ${
         data.trash.fromNow
       }. No recycling this week.`;
-      await email.sendEmail(message);
-      return message;
+        return message;
       }
     }
   } else {
