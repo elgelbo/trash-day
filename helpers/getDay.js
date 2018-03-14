@@ -101,9 +101,13 @@ processMoment = async (name, t, r) => {
 message = async (data) => {
   const tillTrash = data.trash.hrsTill;
   const trashDay = data.trash.day;
+  const now = moment();
+  const begin = moment(data.trash.iso).subtract({hours: 14, minutes: 31});
+  const end = moment(data.trash.iso).subtract({hours: 13});
+  const dur = now.isBetween(begin, end);
   if (trashDay === "Thursday") {
     console.log("Normal Trash Schedule");
-    if (tillTrash > -1 && 0 > tillTrash) {
+    if ((tillTrash > -1) && (0 > tillTrash) && (dur === true)) {
       if (data.recycling.isTrue === true) {
         const message = "Trash day is tomorrow! Don't forget recycling...";
       } else {
