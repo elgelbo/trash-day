@@ -68,8 +68,8 @@ processMoment = async (name, t, r) => {
       'trash.daysTill': tDayTill,
       'trash.hrsTill': tHr,
       'trash.fromNow': moment(t).calendar(null, {
-        sameDay: '[Today]',
-        nextDay: '[Tomorrow]',
+        sameDay: '[today]',
+        nextDay: '[tomorrow]',
         nextWeek: 'dddd',
         lastDay: '[Yesterday]',
         lastWeek: '[Last] dddd',
@@ -81,8 +81,8 @@ processMoment = async (name, t, r) => {
       'recycling.daysTill': rDayTill,
       'recycling.hrsTill': rHr,
       'recycling.fromNow': moment(r).calendar(null, {
-        sameDay: '[Today]',
-        nextDay: '[Tomorrow]',
+        sameDay: '[today]',
+        nextDay: '[tomorrow]',
         nextWeek: 'dddd',
         lastDay: '[Yesterday]',
         lastWeek: '[Last] dddd',
@@ -104,16 +104,24 @@ message = async (data) => {
   const now = moment();
   if (trashDay === "Thursday") {
     console.log("Normal Trash Schedule");
-    if ((now.isBetween(moment(data.trash.iso).subtract({hours: 14, minutes: 29}), moment(data.trash.iso).subtract({hours: 13})) === true)) {
+    if ((now.isBetween(moment(data.trash.iso).subtract({
+        hours: 14,
+        minutes: 29
+      }), moment(data.trash.iso).subtract({
+        hours: 13
+      })) === true)) {
       if (data.recycling.isTrue === true) {
         const message = "Trash day is tomorrow! Don't forget recycling...";
+        await email.sendEmail(message);
+        return message;
       } else {
         const message = "Trash day is tomorrow! No recycling...";
+        await email.sendEmail(message);
+        return message;
       }
-      await email.sendEmail(message);
-      return message;
     } else if (tillTrash < -1) {
       if (data.recycling.isTrue === true) {
+        // TODO
         const message = `Trash day is ${
         data.trash.fromNow
       }. Don't forget the recycling!`;
@@ -124,21 +132,47 @@ message = async (data) => {
       }. No recycling this week.`;
         return message;
       }
+    } else if ((now.isBetween(moment(data.trash.iso).add({
+        hours: 0,
+        minutes: 1
+      }), moment(data.trash.iso).add({
+        hours: 23,
+        minutes: 59
+      })) === true)) {
+      const message = `Trash day is ${
+      data.trash.fromNow
+    }. Don't forget the recycling!`;
+      return message;
+    } else {
+      const message = `Trash day is ${
+      data.trash.fromNow
+    }. No recycling this week.`;
+      return message;
     }
   } else {
     console.log("Holiday");
-    if ((now.isBetween(moment(data.trash.iso).subtract({hours: 14, minutes: 29}), moment(data.trash.iso).subtract({hours: 13})) === true)) {
+    if ((now.isBetween(moment(data.trash.iso).subtract({
+        hours: 14,
+        minutes: 29
+      }), moment(data.trash.iso).subtract({
+        hours: 13
+      })) === true)) {
       if (data.recycling.isTrue === true) {
         const message = "It is a holiday - trash day is tomorrow - and don't forget recycling!";
+        await email.sendEmail(message);
+        return message;
       } else {
         const message = "It is a holiday - trash day is tomorrow!";
+        await email.sendEmail(message);
+        return message;
       }
-      await email.sendEmail(message);
-      return message;
-    } else if ((now.isBetween(moment(data.trash.iso).subtract({hours: 38, minutes: 29}), moment(data.trash.iso).subtract({hours: 37})) === true)) {
+    } else if ((now.isBetween(moment(data.trash.iso).subtract({
+        hours: 38,
+        minutes: 29
+      }), moment(data.trash.iso).subtract({
+        hours: 37
+      })) === true)) {
       const message = `No trash day tomorrow, it is a holiday! Trash day is on ${data.trash.day}`;
-      await email.sendEmail(message);
-      return message;
     }
   }
 };

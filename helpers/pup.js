@@ -11,8 +11,8 @@ const url = 'https://apps.sandiego.gov/econtainer/control/searchaddressinfo';
 
 pupDate = async (name) => {
 // console.log(name);
-  const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
-  // const browser = await puppeteer.launch({headless: false});
+  const browser = await puppeteer.launch({headless: false, ignoreHTTPSErrors: true, args: ['--no-sandbox', '--disable-setuid-sandbox']});
+  // const browser = await puppeteer.launch({headless: false, ignoreHTTPSErrors: true});
   console.log('i am the pup');
 
   try {
@@ -43,11 +43,12 @@ pupDate = async (name) => {
     console.log(page.url())
     const tDate = await page.evaluateHandle(() => document.querySelector('body > table:nth-child(8) > tbody > tr > td > table > tbody > tr > td > table:nth-child(2) > tbody > tr:nth-child(2) > td:nth-child(4)').textContent);
     const rDate = await page.evaluateHandle(() => document.querySelector('body > table:nth-child(8) > tbody > tr > td > table > tbody > tr > td > table:nth-child(2) > tbody > tr:nth-child(3) > td:nth-child(4)').textContent);
-    browser.close();
     const trashD = moment(tDate._remoteObject.value, "MM-DD-YYYY");
     const recyD = moment(rDate._remoteObject.value, "MM-DD-YYYY");
     const newR = moment(recyD).clone().add(7, "hours").toISOString();
     const newT = moment(trashD).clone().add(7, "hours").toISOString();
+    console.log(newR, newT);
+    browser.close();
     return getDay.processMoment(name, newT, newR);
   } catch (e) {
     console.log(e);
