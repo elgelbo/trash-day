@@ -105,10 +105,9 @@ message = async (data) => {
   if (trashDay === "Thursday") {
     console.log("Normal Trash Schedule");
     if ((now.isBetween(moment(data.trash.iso).subtract({
-        hours: 14,
-        minutes: 29
+        hours: 7
       }), moment(data.trash.iso).subtract({
-        hours: 13
+        hours: 8
       })) === true)) {
       if (data.recycling.isTrue === true) {
         const message = "Trash day is tomorrow! Don't forget recycling...";
@@ -152,10 +151,9 @@ message = async (data) => {
   } else {
     console.log("Holiday");
     if ((now.isBetween(moment(data.trash.iso).subtract({
-        hours: 14,
-        minutes: 29
+        hours: 7
       }), moment(data.trash.iso).subtract({
-        hours: 13
+        hours: 8
       })) === true)) {
       if (data.recycling.isTrue === true) {
         const message = "It is a holiday - trash day is tomorrow - and don't forget recycling!";
