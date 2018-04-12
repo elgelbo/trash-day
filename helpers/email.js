@@ -16,7 +16,7 @@ var sendEmail = (message) => {
 
   // setup email data with unicode symbols
   const mailOptions = {
-      from: '"💩 💩 💩 💩 💩" <mgelbman@gmail.com>', // sender address
+      from: 'mgelbman@gmail.com', // sender address
       to: 'mgelbman@gmail.com, erutel@gmail.com', // list of receivers
       subject: `${message}` + '💩 💩 💩 💩 💩', // Subject line
       text: message, // plain text body

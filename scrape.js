@@ -18,11 +18,9 @@ checkDate = async () => {
   const db = await getDay.getDaybyName(name);
   const current = await getDay.currentDay(db);
   const message = await getDay.message(current);
-  console.log(message);
   const newData = await Trash.findOneAndUpdate({ name: current.name }, {
     message: message
   }, {new: true}).exec();
-  console.log(newData);
   mongoose.connection.close().then(console.log('Mongoose connection closed.'));
 }
 
