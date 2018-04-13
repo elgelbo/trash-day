@@ -22,9 +22,7 @@ getDaybyName = async (name) => {
 
 currentDay = async (data) => {
   const now = moment();
-  // console.log(data);
-  // const trashDay = moment('2018-03-05T00:00:00.000Z');
-  const trashDay = moment(data.trash.date);
+  const trashDay = moment(data.trash.date).add(24, 'h');;
   const check = moment().isBefore(trashDay);
   if (check === true) {
     console.log('Trash day has not happened');
@@ -97,81 +95,84 @@ processMoment = async (name, t, r) => {
 
 
 message = async (data) => {
-    const tillTrash = data.trash.hrsTill;
-    const trashDay = data.trash.day;
-    const now = moment();
-    if (trashDay === "Thursday") {
-      console.log("Normal Trash Schedule");
-      if ((now.isBetween(moment(data.trash.iso).subtract({
-          hours: 6
-        }), moment(data.trash.iso).subtract({
-          hours: 5
-        })) === true)) {
-        if (data.recycling.isTrue === true) {
-          const message = "Trash day is tomorrow! Don't forget recycling...";
-          await email.sendEmail(message);
-          return message;
-        } else {
-          const message = "Trash day is tomorrow! No recycling...";
-          await email.sendEmail(message);
-          return message;
-        }
-      } else if ((now.isBetween(moment(data.trash.iso).add({
-            hours: 7
-          }), moment(data.trash.iso).add({
-            hours: 6
-          })) {
-            if (data.recycling.isTrue === true) {
-              const message = "Trash day is today! Don't forget recycling...";
-              await email.sendEmail(message);
-              return message;
-            } else {
-              const message = "Trash day is today! No recycling...";
-              await email.sendEmail(message);
-              return message;
-            }
-          } else if (tillTrash < -1) {
-            if (data.recycling.isTrue === true) {
-              const message = `Trash day is ${
-        data.trash.fromNow
-      }. Don't forget the recycling!`;
-              return message;
-            } else {
-              const message = `Trash day is ${
-        data.trash.fromNow
-      }. No recycling this week.`;
-              return message;
-            }
-          }
-        }
-        else {
-          console.log("Holiday");
-          if ((now.isBetween(moment(data.trash.iso).subtract({
-              hours: 6
-            }), moment(data.trash.iso).subtract({
-              hours: 5
-            })) === true)) {
-            if (data.recycling.isTrue === true) {
-              const message = "It is a holiday - trash day is tomorrow - and don't forget recycling!";
-              await email.sendEmail(message);
-              return message;
-            } else {
-              const message = "It is a holiday - trash day is tomorrow!";
-              await email.sendEmail(message);
-              return message;
-            }
-          } else if ((now.isBetween(moment(data.trash.iso).subtract({
-              hours: 30
-            }), moment(data.trash.iso).subtract({
-              hours: 29
-            })) === true)) {
-            const message = `No trash day tomorrow, it is a holiday! Trash day is on ${data.trash.day}`;
-          }
-        }
-      };
+  const tillTrash = data.trash.hrsTill;
+  const trashDay = data.trash.day;
+  const now = moment();
+  if (trashDay === "Thursday") {
+    console.log("Normal Trash Schedule");
+    if ((now.isBetween(moment(data.trash.iso).subtract({
+        hours: 6
+      }), moment(data.trash.iso).subtract({
+        hours: 5
+      })) === true)) {
+      if (data.recycling.isTrue === true) {
+        const message = "Trash day is tomorrow! Don't forget recycling...";
+        await email.sendEmail(message);
+        return message;
+      } else {
+        const message = "Trash day is tomorrow! No recycling...";
+        await email.sendEmail(message);
+        return message;
+      }
+    } else if ((now.isBetween(moment(data.trash.iso).add({
+        hours: 6
+      }), moment(data.trash.iso).add({
+        hours: 7
+      })) === true)) {
+      if (data.recycling.isTrue === true) {
+        const message = "Trash day is today! Don't forget recycling...";
+        await email.sendEmail(message);
+        return message;
+      } else {
+        const message = "Trash day is today! No recycling...";
+        await email.sendEmail(message);
+        return message;
+      }
+    }
+  } else {
+    console.log('Holiday schedule');
+    if ((now.isBetween(moment(data.trash.iso).subtract({
+        hours: 6
+      }), moment(data.trash.iso).subtract({
+        hours: 5
+      })) === true)) {
+      if (data.recycling.isTrue === true) {
+        const message = "It is a holiday - trash day is tomorrow - and don't forget recycling!";
+        await email.sendEmail(message);
+        return message;
+      } else {
+        const message = "It is a holiday - trash day is tomorrow!";
+        await email.sendEmail(message);
+        return message;
+      }
+    } else if ((now.isBetween(moment(data.trash.iso).add({
+        hours: 6
+      }), moment(data.trash.iso).add({
+        hours: 7
+      })) === true)) {
+      if (data.recycling.isTrue === true) {
+        const message = "It is a holiday - trash day is today - and don't forget recycling!";
+        await email.sendEmail(message);
+        return message;
+      } else {
+        const message = "It is a holiday - trash day is today!";
+        await email.sendEmail(message);
+        return message;
+      }
+    } else if ((now.isBetween(moment(data.trash.iso).subtract({
+        hours: 30
+      }), moment(data.trash.iso).subtract({
+        hours: 29
+      })) === true)) {
+      const message = "No trash day tomorrow, it is a holiday! Trash day is on ${data.trash.day}";
+      await email.sendEmail(message);
+      return message;
+    }
+  }
+};
 
-      module.exports.message = message;
-      module.exports.processMoment = processMoment;
-      module.exports.scrapeDay = scrapeDay;
-      module.exports.currentDay = currentDay;
-      module.exports.getDaybyName = getDaybyName;
+module.exports.message = message;
+module.exports.processMoment = processMoment;
+module.exports.scrapeDay = scrapeDay;
+module.exports.currentDay = currentDay;
+module.exports.getDaybyName = getDaybyName;
