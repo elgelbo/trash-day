@@ -1,6 +1,5 @@
 const puppeteer = require('puppeteer');
 var moment = require('moment');
-var moment = require('moment-timezone');
 const mongoose = require('mongoose');
 require('../models/Trash');
 const Trash = mongoose.model('Trash');

@@ -51,8 +51,8 @@ processMoment = async (name, t, r) => {
     console.log('no name');
     const trash = new Trash;
     trash.name = 'mytrashday';
-    trash.trash.date = t,
-      trash.recycling.date = r
+    trash.trash.date = t;
+    trash.recycling.date = r;
     const data = await trash.save();
     return data;
   } else {
@@ -64,27 +64,13 @@ processMoment = async (name, t, r) => {
       'trash.day': moment(t).format("dddd"),
       'trash.daysTill': tDayTill,
       'trash.hrsTill': tHr,
-      'trash.fromNow': moment(t).calendar(null, {
-        sameDay: '[today]',
-        nextDay: '[tomorrow]',
-        nextWeek: 'dddd',
-        lastDay: '[Yesterday]',
-        lastWeek: '[Last] dddd',
-        sameElse: 'DD/MM/YYYY'
-      }),
+      'trash.fromNow': now.to(t),
       'recycling.date': r,
       'recycling.iso': moment(r).toISOString(),
       'recycling.day': moment(r).format("dddd"),
       'recycling.daysTill': rDayTill,
       'recycling.hrsTill': rHr,
-      'recycling.fromNow': moment(r).calendar(null, {
-        sameDay: '[today]',
-        nextDay: '[tomorrow]',
-        nextWeek: 'dddd',
-        lastDay: '[Yesterday]',
-        lastWeek: '[Last] dddd',
-        sameElse: 'DD/MM/YYYY'
-      }),
+      'recycling.fromNow': now.to(r),
       'recycling.isTrue': both
     }, {
       new: true
