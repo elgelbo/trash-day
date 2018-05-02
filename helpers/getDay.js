@@ -64,7 +64,14 @@ processMoment = async (name, t, r) => {
       'trash.day': moment(t).format("dddd"),
       'trash.daysTill': tDayTill,
       'trash.hrsTill': tHr,
-      'trash.fromNow': now.to(t),
+      'trash.fromNow': moment(t).calendar(null, {
+        sameDay: '[is today]',
+        nextDay: '[is tomorrow]',
+        nextWeek: '[is] dddd',
+        lastDay: '[was yesterday]',
+        lastWeek: '[was last] dddd',
+        sameElse: '[is on]DD/MM/YYYY'
+      }),
       'recycling.date': r,
       'recycling.iso': moment(r).toISOString(),
       'recycling.day': moment(r).format("dddd"),
