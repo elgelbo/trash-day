@@ -70,7 +70,7 @@ processMoment = async (name, t, r) => {
         nextWeek: '[is] dddd',
         lastDay: '[was yesterday]',
         lastWeek: '[was last] dddd',
-        sameElse: '[is on]DD/MM/YYYY'
+        sameElse: '[is on] DD/MM/YYYY'
       }),
       'recycling.date': r,
       'recycling.iso': moment(r).toISOString(),
