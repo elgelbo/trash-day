@@ -91,7 +91,7 @@ message = async (data) => {
   const tillTrash = data.trash.hrsTill;
   const trashDay = data.trash.day;
   const now = moment();
-  if (trashDay === "Thursday") {
+  if (trashDay === "Friday") {
     console.log("Normal Trash Schedule");
     if ((now.isBetween(moment(data.trash.iso).subtract({
         hours: 6
