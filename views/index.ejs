@@ -1,0 +1,21 @@
+<html>
+
+<head>
+  <meta charset='utf-8' />
+  <title>Add a GeoJSON polygon</title>
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+  <p><%= Txt%></p>
+  <p><%= Obj.name %></p>
+  <div id='map' class="element"></div>
+</body>
+<script src="main.js"></script>
+<script>
+var data = <%- JSON.stringify(Obj) %>;
+console.log(data);
+</script>
+
+</html>

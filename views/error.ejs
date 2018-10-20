@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ./partials/header.ejs %>
+</head>
+<body>
+<div>
+  <h2><%= status%></h2>
+  <p><%= message%></p>
+</div>
+<%if (stackHighlighted != null) { %>
+<pre> <%= stackHighlighted%> </pre>
+<% } %>
+</body>
+</html>

@@ -1,0 +1,4 @@
+NODE_ENV=development
+MONGODB_URI='full string'
+PORT=7777
+MAPBOX_TOKEN=''
