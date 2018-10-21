@@ -18,6 +18,9 @@ exports.check = async (req, res, next) => {
 exports.message = async (req, res) => {
   const day = req.body.trashDay;
   const trashDay = await messenger.checkWindow(day);
-  console.log(trashDay);  // res.send(req.body.trashDay);
+  console.log(trashDay);
+  if (trashDay.trigger === true) {
+    await messenger.email(trashDay.title, day);
+  }
   res.status(200).end();
 }
