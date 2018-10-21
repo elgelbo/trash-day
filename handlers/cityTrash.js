@@ -77,7 +77,7 @@ const trashName = 'mytrashday';
 exports.checkDate = async () => {
   const day = await getDaybyName(trashName);
   const current = await checkCurrentDay(day.trash.iso)
-  if (current === false) {
+  if (current === true) {
     const newDate = await scrape.cityTrash();
     return formatDate(trashName, newDate[0], newDate[1]);
   } else {
