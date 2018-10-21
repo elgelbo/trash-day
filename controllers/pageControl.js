@@ -1,13 +1,23 @@
 const cityTrash = require('../handlers/cityTrash')
+const messenger = require('../handlers/messenger')
 
 exports.homePage = async (req, res) => {
-  const trashDay = await cityTrash.checkDate();
-  // console.log(trashDay);
-  const message = await cityTrash.setMessage(trashDay);
-  // console.log(message);
-  const saveDay = await cityTrash.saveDay(trashDay, message);
-  console.log(saveDay);
   res.render('index', {
-    Obj: saveDay, 
-    Txt: saveDay.message});
+    Obj: req.body.trashDay, 
+    Txt: req.body.trashDay.message});
+}
+
+exports.check = async (req, res, next) => {
+  const trashDay = await cityTrash.checkDate();
+  const message = await cityTrash.setMessage(trashDay);
+  const saveDay = await cityTrash.saveDay(trashDay, message);
+  req.body.trashDay = saveDay;
+  next();
+}
+
+exports.message = async (req, res) => {
+  const day = req.body.trashDay;
+  const trashDay = await messenger.checkWindow(day);
+  console.log(trashDay);  // res.send(req.body.trashDay);
+  res.status(200).end();
 }

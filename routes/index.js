@@ -5,6 +5,7 @@ const pageControl = require('../controllers/pageControl');
 const { catchErrors } = require('../handlers/errorHandlers')
 
 // GLOBAL
-router.get('/',  pageControl.homePage);
+router.get('/', catchErrors(pageControl.check), pageControl.homePage);
+router.get('/message', catchErrors(pageControl.check), catchErrors(pageControl.message));
 
 module.exports = router;
