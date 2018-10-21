@@ -1,6 +1,6 @@
 const moment = require('moment')
 const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+sgMail.setApiKey(process.env.SENDGRID_KEY);
 
 exports.checkWindow = async (day) => {
   const now = moment();
