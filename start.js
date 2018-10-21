@@ -11,8 +11,7 @@ mongoose.connect(process.env.MONGODB_URI, { useMongoClient: true }).then(
 ); // see mognoose callback on connect: http://mongoosejs.com/docs/connections.html#callback
 
 // import mongoose models
-require('./models/Model');
-
+require('./models/Trash');
 
 // Start our app!
 const app = require('./app');

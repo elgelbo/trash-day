@@ -1,6 +1,6 @@
 {
-  "name": "barebones-node",
-  "version": "1.0.0",
+  "name": "trash-day-2",
+  "version": "2.0.0",
   "private": true,
   "engines": {
     "node": "^8.11.1"
@@ -8,15 +8,17 @@
   "scripts": {
     "start": "node start.js",
     "build": "npx webpack --mode development --config webpack.config.js",
-    "watch": "npm run build && npm run start",
+    "watch": "npm run build && nodemon run start",
     "postinstall": "npm run build"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
     "dotenv": "^4.0.0",
     "ejs": "^2.6.1",
-    "express": "^4.16.3",
-    "mongoose": "^4.13.15"
+    "express": "^4.16.4",
+    "moment": "^2.22.2",
+    "mongoose": "^4.13.17",
+    "puppeteer": "^1.9.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
@@ -24,9 +26,9 @@
     "babel-preset-env": "^1.7.0",
     "css-loader": "^1.0.0",
     "extract-text-webpack-plugin": "4.0.0-alpha.0",
-    "nodemon": "^1.18.3",
+    "nodemon": "^1.18.4",
     "style-loader": "^0.22.1",
-    "webpack": "^4.16.5",
-    "webpack-cli": "^3.1.0"
+    "webpack": "^4.21.0",
+    "webpack-cli": "^3.1.2"
   }
 }
