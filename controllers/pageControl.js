@@ -9,7 +9,7 @@ exports.homePage = async (req, res) => {
 
 exports.check = async (req, res, next) => {
   const trashDay = await cityTrash.checkDate();
-  const message = await cityTrash.setMessage(trashDay);
+  const message = await cityTrash.setMessage(trashDay); 
   const saveDay = await cityTrash.saveDay(trashDay, message);
   req.body.trashDay = saveDay;
   next();

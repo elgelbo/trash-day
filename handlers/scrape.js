@@ -3,7 +3,9 @@ const puppeteer = require('puppeteer');
 const url = 'https://getitdone.force.com/ESD_TrashCollectionSchedule';
 
 exports.cityTrash = async () => {
+  // for heroku prod
   const browser = await puppeteer.launch({ignoreHTTPSErrors: true, args: ['--no-sandbox', '--disable-setuid-sandbox']});
+  // for testing/observing local
   // const browser = await puppeteer.launch({ headless: false, ignoreHTTPSErrors: true });
   console.log('i am the pup');
   try {
@@ -32,9 +34,10 @@ exports.cityTrash = async () => {
     const rDate = await page.evaluateHandle(() => document.querySelector('table.twelve > tbody:nth-child(1) > tr:nth-child(3) > td:nth-child(4)').textContent);
     const trashD = moment(tDate._remoteObject.value.trim(), "MM-DD-YYYY");
     const recyD = moment(rDate._remoteObject.value.trim(), "MM-DD-YYYY");
-    const newR = moment(recyD).clone().add(7, "hours").toISOString();
-    const newT = moment(trashD).clone().add(7, "hours").toISOString();
+    const newR = moment(recyD).clone().add(8, "hours").toISOString();
+    const newT = moment(trashD).clone().add(8, "hours").toISOString();
     await browser.close();
+    console.log(newR, newT)
     return [newT, newR];
   } catch (e) {
     console.log(e);

@@ -7,10 +7,10 @@ getDaybyName = async (name) => {
   const Name = await Trash.findOne({
     name
   });
-  if (!Name) {
-    console.log('Could not find a trash day.');
-    return scrape.cityTrash();
-  }
+  // if (!Name) {
+  //   console.log('Could not find a trash day.');
+  //   return scrape.cityTrash();
+  // }
   return Name;
 };
 
@@ -48,7 +48,7 @@ formatDate = async (name, t, r) => {
           nextWeek: '[is] dddd',
           lastDay: '[was yesterday]',
           lastWeek: '[was last] dddd',
-          sameElse: '[is on] DD/MM/YYYY'
+          sameElse: '[is on] dddd, MMMM Do'
         }),
       },
       recycling: {
@@ -63,7 +63,7 @@ formatDate = async (name, t, r) => {
           nextWeek: '[is] dddd',
           lastDay: '[was yesterday]',
           lastWeek: '[was last] dddd',
-          sameElse: '[is on] DD/MM/YYYY'
+          sameElse: '[is on] dddd, MMMM Do'
         }),
         isTrue: both
       }
@@ -76,12 +76,17 @@ const trashName = 'mytrashday';
 
 exports.checkDate = async () => {
   const day = await getDaybyName(trashName);
-  const current = await checkCurrentDay(day.trash.iso)
-  if (current === false) {
+  if (day === null) {
     const newDate = await scrape.cityTrash();
     return formatDate(trashName, newDate[0], newDate[1]);
   } else {
-    return formatDate(day.name, day.trash.date, day.recycling.date);
+    const current = await checkCurrentDay(day.trash.iso);
+    if (current === false || current === null) {
+      const newDate = await scrape.cityTrash();
+      return formatDate(trashName, newDate[0], newDate[1]);
+    } else {
+      return formatDate(day.name, day.trash.date, day.recycling.date);
+    }
   }
 };
 
@@ -89,14 +94,11 @@ exports.setMessage = (trashDay) => {
   if (trashDay.recycling.isTrue === true) {
     return `Trash day ${trashDay.trash.fromNow}. Don't forget the recycling!`
   } else {
-    return `Trash day ${trashDay.trash.fromNow}. No recycling this week`
+    return `Trash day ${trashDay.trash.fromNow}. No recycling this week. The next recycling day ${trashDay.recycling.fromNow}.`
   }
 }
 
 exports.saveDay = async (date, message) => {
-  const data = await Trash.findOneAndUpdate({ name: trashName }, {
-    message
-    , trash: date.trash, recycling: date.recycling
-  }).exec();
+  const data = await Trash.findOneAndUpdate({ name: trashName }, { message, trash: date.trash, recycling: date.recycling }, {upsert: true, new: true  }).exec();
   return data;
 }
