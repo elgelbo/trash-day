@@ -14,7 +14,12 @@ exports.checkWindow = async (day) => {
   if (normPre === true || normDo === true || altWarn === true) {
     return { title: 'normWindow', trigger: true, tMinus: day.trash.hrsTill, it: moment(day.trash.date).format('MMMM Do YYYY, h:mm:ss a') };
   }  else {
-    return { trigger: false, tMinus: day.trash.hrsTill, triggerStart: normStart.format('MMMM Do YYYY, h:mm:ss a'), triggerEnd: normEnd.format('MMMM Do YYYY, h:mm:ss a'), it: moment(day.trash.date).format('MMMM Do YYYY, h:mm:ss a')  };
+    return { 
+      trigger: false, 
+      tMinus: day.trash.hrsTill, 
+      triggerStart: normStart.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
+      triggerEnd: normEnd.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
+      it: moment(day.trash.date).tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z')};
   }
 }
 
