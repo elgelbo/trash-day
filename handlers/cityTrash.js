@@ -1,5 +1,5 @@
 const scrape = require('./scrape')
-const moment = require('moment')
+const moment = require('moment-timezone')
 const mongoose = require('mongoose');
 const Trash = require('../models/Trash');
 

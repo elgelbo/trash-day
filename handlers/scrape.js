@@ -1,4 +1,4 @@
-const moment = require('moment')
+const moment = require('moment-timezone')
 const puppeteer = require('puppeteer');
 const url = 'https://getitdone.force.com/ESD_TrashCollectionSchedule';
 
