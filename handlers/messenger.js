@@ -3,7 +3,7 @@ const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_KEY);
 
 exports.checkWindow = async (day) => {
-  const now = moment();
+  const now = moment().tz('America/Los_Angeles');
   const trash = day.trash.iso;
   const normStart =  moment(trash).subtract({ hours: 14.5 });
   const normEnd =  moment(trash).subtract({ hours: 13.5 })
