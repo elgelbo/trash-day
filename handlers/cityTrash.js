@@ -7,10 +7,6 @@ getDaybyName = async (name) => {
   const Name = await Trash.findOne({
     name
   });
-  // if (!Name) {
-  //   console.log('Could not find a trash day.');
-  //   return scrape.cityTrash();
-  // }
   return Name;
 };
 
@@ -20,13 +16,13 @@ checkCurrentDay = async (date) => {
   return check;
 };
 
-formatDate = async (name, t, r) => {
+formatDate = async (name, t, r) => { 
   var now = moment();
   var tHr = now.diff(t, "hours");
   var rHr = now.diff(r, "hours");
   var both = tHr === rHr ? true : false;
   var tDayTill = parseFloat(tHr / 24);
-  var rDayTill = parseFloat(tHr / 24);
+  var rDayTill = parseFloat(rHr / 24);
   if (!name) {
     const trash = new Trash;
     trash.name = 'mytrashday';

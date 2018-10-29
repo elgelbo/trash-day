@@ -5,20 +5,22 @@ sgMail.setApiKey(process.env.SENDGRID_KEY);
 exports.checkWindow = async (day) => {
   const now = moment();
   const trash = day.trash.iso;
+  const normStart =  moment(trash).subtract({ hours: 14.5 });
+  const normEnd =  moment(trash).subtract({ hours: 13.5 })
   const nextNorm = moment().day(5).hours(8).minute(0).millisecond(0);
-  const normPre = now.isBetween(moment(trash).subtract({ hours: 15.5 }), moment(trash).subtract({ hours: 14.5 }));
+  const normPre = now.isBetween(normStart, normEnd);
   const normDo = now.isBetween(moment(trash).subtract({ hours: 2 }), moment(trash).subtract({ hours: 1 }));
-  const altWarn = now.isBetween(moment(nextNorm).subtract({ hours: 15.5 }), moment(nextNorm).subtract({ hours: 14.5 }));
+  const altWarn = now.isBetween(moment(nextNorm).subtract({ hours: 14.5 }), moment(nextNorm).subtract({ hours: 13.5 }));
   if (normPre === true || normDo === true || altWarn === true) {
     return { title: 'normWindow', trigger: true, tMinus: day.trash.hrsTill, it: moment(day.trash.date).format('MMMM Do YYYY, h:mm:ss a') };
   }  else {
-    return { trigger: false, tMinus: day.trash.hrsTill, it: moment(day.trash.date).format('MMMM Do YYYY, h:mm:ss a')  };
+    return { trigger: false, tMinus: day.trash.hrsTill, triggerStart: normStart.format('MMMM Do YYYY, h:mm:ss a'), triggerEnd: normEnd.format('MMMM Do YYYY, h:mm:ss a'), it: moment(day.trash.date).format('MMMM Do YYYY, h:mm:ss a')  };
   }
 }
 
 sendEmail = (message) => {
   const msg = {
-    to: 'mgelbman@gmail.com',
+    to: 'mgelbman@gmail.com, ertuel@gmail.com',
     from: 'mgelbman@gmail.com',
     subject: `${message}` + '💩 💩 💩 💩 💩',
     text: `${message}` + '💩 💩 💩 💩 💩',
