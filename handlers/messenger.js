@@ -5,21 +5,49 @@ sgMail.setApiKey(process.env.SENDGRID_KEY);
 exports.checkWindow = async (day) => {
   const now = moment().tz('America/Los_Angeles');
   const trash = day.trash.iso;
-  const normStart =  moment(trash).subtract({ hours: 14.5 });
-  const normEnd =  moment(trash).subtract({ hours: 13.5 })
+  const trashDow = moment(day.trash.date).day();
+  const normStart = moment(trash).subtract({ hours: 14.5 });
+  const normEnd = moment(trash).subtract({ hours: 13.5 })
   const nextNorm = moment().day(5).hours(8).minute(0).millisecond(0);
   const normPre = now.isBetween(normStart, normEnd);
   const normDo = now.isBetween(moment(trash).subtract({ hours: 2 }), moment(trash).subtract({ hours: 1 }));
   const altWarn = now.isBetween(moment(nextNorm).subtract({ hours: 14.5 }), moment(nextNorm).subtract({ hours: 13.5 }));
-  if (normPre === true || normDo === true || altWarn === true) {
-    return { title: 'normWindow', trigger: true, tMinus: day.trash.hrsTill, it: moment(day.trash.date).format('MMMM Do YYYY, h:mm:ss a') };
-  }  else {
-    return { 
-      trigger: false, 
-      tMinus: day.trash.hrsTill, 
+  if (normPre === true) {
+    return {
+      title: 'normPre',
+      trigger: true,
+      tMinus: day.trash.hrsTill,
       triggerStart: normStart.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
       triggerEnd: normEnd.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
-      it: moment(day.trash.date).tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z')};
+      it: moment(day.trash.date).tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z')
+    };
+  } else if (normDo === true) {
+    return {
+      title: 'normDo',
+      trigger: true,
+      tMinus: day.trash.hrsTill,
+      triggerStart: normStart.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
+      triggerEnd: normEnd.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
+      it: moment(day.trash.date).tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z')
+    };
+  } else if (altWarn === true && trashDow != 5) {
+    return {
+      title: 'altWarn',
+      trigger: true,
+      tMinus: day.trash.hrsTill,
+      triggerStart: normStart.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
+      triggerEnd: normEnd.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
+      it: moment(day.trash.date).tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z')
+    };
+  } else {
+    return {
+      title: 'none',
+      trigger: false,
+      tMinus: day.trash.hrsTill,
+      triggerStart: normStart.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
+      triggerEnd: normEnd.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
+      it: moment(day.trash.date).tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z')
+    };
   }
 }
 
