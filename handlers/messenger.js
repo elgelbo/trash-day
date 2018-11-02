@@ -10,12 +10,13 @@ exports.checkWindow = async (day) => {
   const normEnd = moment(trash).subtract({ hours: 13.5 })
   const nextNorm = moment().day(5).hours(8).minute(0).millisecond(0);
   const normPre = now.isBetween(normStart, normEnd);
-  const normDo = now.isBetween(moment(trash).subtract({ hours: 2 }), moment(trash).subtract({ hours: 1 }));
+  const normDo = now.isBetween(moment(trash).subtract({ hours: 1.5 }), moment(trash).subtract({ hours: 0.5 }));
   const altWarn = now.isBetween(moment(nextNorm).subtract({ hours: 14.5 }), moment(nextNorm).subtract({ hours: 13.5 }));
   if (normPre === true) {
     return {
       title: 'normPre',
       trigger: true,
+      current: now.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
       tMinus: day.trash.hrsTill,
       triggerStart: normStart.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
       triggerEnd: normEnd.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
@@ -25,6 +26,7 @@ exports.checkWindow = async (day) => {
     return {
       title: 'normDo',
       trigger: true,
+      current: now.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
       tMinus: day.trash.hrsTill,
       triggerStart: normStart.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
       triggerEnd: normEnd.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
@@ -34,6 +36,7 @@ exports.checkWindow = async (day) => {
     return {
       title: 'altWarn',
       trigger: true,
+      current: now.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
       tMinus: day.trash.hrsTill,
       triggerStart: normStart.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
       triggerEnd: normEnd.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
@@ -43,6 +46,7 @@ exports.checkWindow = async (day) => {
     return {
       title: 'none',
       trigger: false,
+      current: now.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
       tMinus: day.trash.hrsTill,
       triggerStart: normStart.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
       triggerEnd: normEnd.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
@@ -131,11 +135,9 @@ sendEmail = (message) => {
 }
 
 exports.email = async (title, day) => {
-  if (title === 'normWindow') {
+  if (title === 'normPre' || 'normDo') {
     await sendEmail(day.message);
-  } else if (title === 'altWindow') {
-    await sendEmail(day.message);
-  } else if (title === 'altWarn') {
+  }  else if (title === 'altWarn') {
     const message = `No trash pickup on Friday! ${day.message}`
     await sendEmail(message);
   }
