@@ -3,53 +3,52 @@ const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_KEY);
 
 exports.checkWindow = async (day) => {
+  const timeTill = day.trash.hrsTill;
   const now = moment().tz('America/Los_Angeles');
-  const trash = day.trash.iso;
+  // const trash = day.trash.iso;
   const trashDow = moment(day.trash.date).day();
-  const normStart = moment(trash).subtract({ hours: 14.5 });
-  const normEnd = moment(trash).subtract({ hours: 13.5 })
-  const nextNorm = moment().day(5).hours(8).minute(0).millisecond(0);
-  const normPre = now.isBetween(normStart, normEnd);
-  const normDo = now.isBetween(moment(trash).subtract({ hours: 1.5 }), moment(trash).subtract({ hours: 0.5 }));
-  const altWarn = now.isBetween(moment(nextNorm).subtract({ hours: 14.5 }), moment(nextNorm).subtract({ hours: 13.5 }));
-  if (normPre === true) {
+  // const normStart = moment(trash).subtract({ hours: 14.5 });
+  // const normEnd = moment(trash).subtract({ hours: 13.5 })
+  const nextNorm = moment().tz('America/Los_Angeles').day(5).hours(8).minute(0).millisecond(0);
+  const nextHr = now.diff(nextNorm, "hours");
+  console.log(nextHr);
+
+  // const normPre = now.isBetween(normStart, normEnd);
+  // const normDo = now.isBetween(moment(trash).subtract({ hours: 1.5 }), moment(trash).subtract({ hours: 0.5 }));
+  // const altWarn = now.isBetween(moment(nextNorm).subtract({ hours: 14.5 }), moment(nextNorm).subtract({ hours: 13.5 }));
+  if (-14.5 > timeTill < -13.5) {
     return {
       title: 'normPre',
       trigger: true,
       current: now.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
       tMinus: day.trash.hrsTill,
-      triggerStart: normStart.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
-      triggerEnd: normEnd.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
       it: moment(day.trash.date).tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z')
     };
-  } else if (normDo === true) {
+  }
+  else if (-38.5 > timeTill < -37.5) {
     return {
-      title: 'normDo',
+      title: 'altPre',
       trigger: true,
       current: now.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
       tMinus: day.trash.hrsTill,
-      triggerStart: normStart.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
-      triggerEnd: normEnd.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
       it: moment(day.trash.date).tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z')
     };
-  } else if (altWarn === true && trashDow != 5) {
-    return {
-      title: 'altWarn',
-      trigger: true,
-      current: now.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
-      tMinus: day.trash.hrsTill,
-      triggerStart: normStart.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
-      triggerEnd: normEnd.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
-      it: moment(day.trash.date).tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z')
-    };
+  } else if (trashDow != 5) {
+    if (-1.5 > nextHr < -0.5) {
+      return {
+        title: 'altPre',
+        trigger: true,
+        current: now.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
+        tMinus: day.trash.hrsTill,
+        it: moment(day.trash.date).tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z')
+      };
+    }
   } else {
     return {
       title: 'none',
       trigger: false,
       current: now.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
       tMinus: day.trash.hrsTill,
-      triggerStart: normStart.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
-      triggerEnd: normEnd.tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
       it: moment(day.trash.date).tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z')
     };
   }
@@ -137,7 +136,7 @@ sendEmail = (message) => {
 exports.email = async (title, day) => {
   if (title === 'normPre' || 'normDo') {
     await sendEmail(day.message);
-  }  else if (title === 'altWarn') {
+  } else if (title === 'altWarn') {
     const message = `No trash pickup on Friday! ${day.message}`
     await sendEmail(message);
   }
