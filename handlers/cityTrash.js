@@ -16,7 +16,7 @@ checkCurrentDay = async (date) => {
   return check;
 };
 
-formatDate = async (name, t, r) => { 
+formatDate = async (name, t, r) => {
   var now = moment();
   var tHr = now.diff(t, "hours");
   var rHr = now.diff(r, "hours");
@@ -33,7 +33,7 @@ formatDate = async (name, t, r) => {
   } else {
     const data = {
       trash: {
-        date: t,
+        date: moment(t).tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
         iso: moment(t).toISOString(),
         day: moment(t).format("dddd"),
         daysTill: tDayTill,
@@ -48,7 +48,7 @@ formatDate = async (name, t, r) => {
         }),
       },
       recycling: {
-        date: r,
+        date: moment(r).tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
         iso: moment(r).toISOString(),
         day: moment(r).format("dddd"),
         daysTill: rDayTill,
@@ -66,6 +66,7 @@ formatDate = async (name, t, r) => {
     };
     return data;
   }
+
 }
 
 const trashName = 'mytrashday';
@@ -81,7 +82,7 @@ exports.checkDate = async () => {
       const newDate = await scrape.cityTrash();
       return formatDate(trashName, newDate[0], newDate[1]);
     } else {
-      return formatDate(day.name, day.trash.date, day.recycling.date);
+      return formatDate(day.name, day.trash.iso, day.recycling.iso);
     }
   }
 };
@@ -95,6 +96,6 @@ exports.setMessage = (trashDay) => {
 }
 
 exports.saveDay = async (date, message) => {
-  const data = await Trash.findOneAndUpdate({ name: trashName }, { message, trash: date.trash, recycling: date.recycling }, {upsert: true, new: true  }).exec();
+  const data = await Trash.findOneAndUpdate({ name: trashName }, { message, trash: date.trash, recycling: date.recycling }, { upsert: true, new: true }).exec();
   return data;
 }
