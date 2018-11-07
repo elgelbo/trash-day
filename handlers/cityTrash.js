@@ -18,8 +18,8 @@ checkCurrentDay = async (date) => {
 
 formatDate = async (name, t, r) => {
   var now = moment();
-  var tHr = now.diff(t, "hours");
-  var rHr = now.diff(r, "hours");
+  var tHr = now.diff(t, "hours", true);
+  var rHr = now.diff(r, "hours", true);
   var both = tHr === rHr ? true : false;
   var tDayTill = parseFloat(tHr / 24);
   var rDayTill = parseFloat(rHr / 24);
