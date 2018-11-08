@@ -17,28 +17,30 @@ checkCurrentDay = async (date) => {
 };
 
 formatDate = async (name, t, r) => {
-  var now = moment();
-  var tHr = now.diff(t, "hours", true);
-  var rHr = now.diff(r, "hours", true);
+  var now = moment().tz('America/Los_Angeles');
+  const tDay = moment(t).tz('America/Los_Angeles');
+  const rDay = moment(r).tz('America/Los_Angeles'); 
+  var tHr = now.diff(tDay, "hours", true);
+  var rHr = now.diff(rDay, "hours", true);
   var both = tHr === rHr ? true : false;
   var tDayTill = parseFloat(tHr / 24);
   var rDayTill = parseFloat(rHr / 24);
   if (!name) {
     const trash = new Trash;
     trash.name = 'mytrashday';
-    trash.trash.date = t;
-    trash.recycling.date = r;
+    trash.trash.date = tDay;
+    trash.recycling.date = rDay;
     const data = await trash.save();
     return data;
   } else {
     const data = {
       trash: {
-        date: moment(t).tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
-        iso: moment(t).toISOString(),
-        day: moment(t).format("dddd"),
+        date: tDay.format('MMMM Do YYYY, h:mm:ss a z'),
+        iso: tDay.toISOString(),
+        day: tDay.format("dddd"),
         daysTill: tDayTill,
         hrsTill: tHr,
-        fromNow: moment(t).calendar(null, {
+        fromNow: tDay.calendar(null, {
           sameDay: '[is today]',
           nextDay: '[is tomorrow]',
           nextWeek: '[is] dddd',
@@ -48,12 +50,12 @@ formatDate = async (name, t, r) => {
         }),
       },
       recycling: {
-        date: moment(r).tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z'),
-        iso: moment(r).toISOString(),
-        day: moment(r).format("dddd"),
+        date: rDay.format('MMMM Do YYYY, h:mm:ss a z'),
+        iso: rDay.toISOString(),
+        day: rDay.format("dddd"),
         daysTill: rDayTill,
         hrsTill: rHr,
-        fromNow: moment(r).calendar(null, {
+        fromNow: rDay.calendar(null, {
           sameDay: '[is today]',
           nextDay: '[is tomorrow]',
           nextWeek: '[is] dddd',
