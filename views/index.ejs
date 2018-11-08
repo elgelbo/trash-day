@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <% include ./partials/header.ejs %>
-  </head>
-  <body>
-    <p><%= Txt%></p>
-    <script src="main.js"></script>
-    <script>
-    var data = <%- JSON.stringify(Obj) %>;
+<% include ./partials/header.ejs %>
+<body>
+  <p>
+    <%= Txt%>
+  </p>
+  <script src="main.js"></script>
+  <script>
+    var data = <% - JSON.stringify(Obj) %>;
     console.log(data);
-    </script>
-  </body>
+  </script>
+</body>
 </html>
