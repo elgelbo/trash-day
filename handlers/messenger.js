@@ -9,7 +9,7 @@ exports.checkWindow = async (day) => {
   console.log(Math.sign(timeTill));
   // timetill not returning true.
   // if (-14.5 > timeTill < -13) {
-    if (timeTill>=-14.5&&timeTill<=-12.5) {
+    if (timeTill>=-14.5&&timeTill<=-13.5) {
     return {
       title: 'normPre',
       trigger: true,
@@ -49,7 +49,7 @@ exports.checkWindow = async (day) => {
 
 sendEmail = (message) => {
   const msg = {
-    to: 'mgelbman@gmail.com, ertuel@gmail.com',
+    to: 'mgelbman@gmail.com, erutel@gmail.com',
     from: 'mgelbman@gmail.com',
     subject: `${message}` + '💩 💩 💩 💩 💩',
     text: `${message}` + '💩 💩 💩 💩 💩',
