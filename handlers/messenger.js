@@ -9,7 +9,7 @@ exports.checkWindow = async (day) => {
   console.log(Math.sign(timeTill));
   // timetill not returning true.
   // if (-14.5 > timeTill < -13) {
-    if (timeTill>=-14.5&&timeTill<=-13.5) {
+  if (timeTill >= -14.5 && timeTill <= -13.5) {
     return {
       title: 'normPre',
       trigger: true,
@@ -17,7 +17,7 @@ exports.checkWindow = async (day) => {
       tMinus: day.trash.hrsTill,
       it: moment(day.trash.iso).tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z')
     };
-  } else if (timeTill>=-1.5&&timeTill<=-0.5) {
+  } else if (timeTill >= -1.5 && timeTill <= -0.5) {
     return {
       title: 'normDo',
       trigger: true,
@@ -27,7 +27,7 @@ exports.checkWindow = async (day) => {
     };
   } else if (day.trash.day != 'Friday') {
     if (
-      timeTill>=-38.5&&timeTill<=-37.5) {
+      timeTill >= -38.5 && timeTill <= -37.5) {
       return {
         title: 'altPre',
         trigger: true,
@@ -49,7 +49,7 @@ exports.checkWindow = async (day) => {
 
 sendEmail = (message) => {
   const msg = {
-    to: 'mgelbman@gmail.com, erutel@gmail.com',
+    to: ['mgelbman@gmail.com, erutel@gmail.com'],
     from: 'mgelbman@gmail.com',
     subject: `${message}` + '💩 💩 💩 💩 💩',
     text: `${message}` + '💩 💩 💩 💩 💩',
