@@ -5,7 +5,11 @@ sgMail.setApiKey(process.env.SENDGRID_KEY);
 exports.checkWindow = async (day) => {
   const timeTill = day.trash.hrsTill;
   const now = moment().tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z');
-  if (-14.5 > timeTill < -13.5) {
+  // console.log(typeof timeTill);
+  console.log(Math.sign(timeTill));
+  // timetill not returning true.
+  // if (-14.5 > timeTill < -13) {
+    if (timeTill>=-14.5&&timeTill<=-12.5) {
     return {
       title: 'normPre',
       trigger: true,
@@ -13,7 +17,7 @@ exports.checkWindow = async (day) => {
       tMinus: day.trash.hrsTill,
       it: moment(day.trash.iso).tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z')
     };
-  } else if (-1.5 > timeTill < -0.5) {
+  } else if (timeTill>=-1.5&&timeTill<=-0.5) {
     return {
       title: 'normDo',
       trigger: true,
@@ -22,7 +26,8 @@ exports.checkWindow = async (day) => {
       it: moment(day.trash.iso).tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z')
     };
   } else if (day.trash.day != 'Friday') {
-    if (-38.5 > timeTill < -37.5) {
+    if (
+      timeTill>=-38.5&&timeTill<=-37.5) {
       return {
         title: 'altPre',
         trigger: true,
