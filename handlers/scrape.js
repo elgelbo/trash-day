@@ -37,7 +37,10 @@ exports.cityTrash = async () => {
     const newR = moment(recyD).clone().add(8, "hours").toISOString();
     const newT = moment(trashD).clone().add(8, "hours").toISOString();
     await browser.close();
-    return [newT, newR];
+    console.log(newT.format('MMMM Do YYYY, h:mm:ss a z'));
+    
+    // return [newT, newR];
+
   } catch (e) {
     console.log(e);
     await browser.close();
