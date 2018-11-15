@@ -20,10 +20,8 @@ formatDate = async (name, t, r) => {
   var now = moment().tz('America/Los_Angeles');
   const tDay = moment(t).tz('America/Los_Angeles');
   const rDay = moment(r).tz('America/Los_Angeles');
-  console.log(tDay.format('MMMM Do YYYY, h:mm:ss a z'));
-  var tHr = now.diff(tDay, "hours", true);
-  var rHr = now.diff(rDay, "hours", true);
-  console.log(tHr);
+  var tHr = moment().tz('America/Los_Angeles').diff(tDay, "hours", true);
+  var rHr = moment().tz('America/Los_Angeles').diff(rDay, "hours", true);
   var both = tHr === rHr ? true : false;
   var tDayTill = parseFloat(tHr / 24);
   var rDayTill = parseFloat(rHr / 24);

@@ -32,14 +32,10 @@ exports.cityTrash = async () => {
 
     const tDate = await page.evaluateHandle(() => document.querySelector('table.twelve > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(4)').textContent);
     const rDate = await page.evaluateHandle(() => document.querySelector('table.twelve > tbody:nth-child(1) > tr:nth-child(3) > td:nth-child(4)').textContent);
-    const trashD = moment(tDate._remoteObject.value.trim(), "MM-DD-YYYY").tz('America/Los_Angeles');
-    const recyD = moment(rDate._remoteObject.value.trim(), "MM-DD-YYYY").tz('America/Los_Angeles');
-    const newR = moment(recyD).clone().add(8, "hours").toISOString();
-    const newT = moment(trashD).clone().add(8, "hours").toISOString();
+    const trashD = moment(tDate._remoteObject.value.trim(), "MM-DD-YYYY").tz('America/Los_Angeles').add(8, "hours").toISOString();
+    const recyD = moment(rDate._remoteObject.value.trim(), "MM-DD-YYYY").tz('America/Los_Angeles').add(8, "hours").toISOString();
     await browser.close();
-    console.log(moment(newT).format('MMMM Do YYYY, h:mm:ss a z'));
-    return [newT, newR];
-
+    return [trashD, recyD];
   } catch (e) {
     console.log(e);
     await browser.close();
