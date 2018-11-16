@@ -5,7 +5,8 @@ sgMail.setApiKey(process.env.SENDGRID_KEY);
 exports.checkWindow = async (day) => {
   const timeTill = day.trash.hrsTill;
   const now = moment().tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z');
-  if (timeTill >= -14.5 && timeTill <= -13.5) {
+  // if (timeTill >= -14.5 && timeTill <= -13.5) {
+  if (timeTill >= -14.5 && timeTill <= -8) {
     return {
       title: 'normPre',
       trigger: true,
@@ -119,7 +120,7 @@ sendEmail = (message) => {
       '' +
       '</html>' // html body,
   };
-  sgMail.send(msg);
+  sgMail.sendMultiple(msg);
 }
 
 exports.email = async (title, day) => {
