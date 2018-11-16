@@ -57,6 +57,6 @@ exports.updateDate = async () => {
     console.log(newDate[0], newDate[1]);
     // const t = "11/16/2018";
     // const r = "11/24/2018"
-      return formatDate(newDate[0], newDate[1]);
+      return formatDate(JSON.stringify(newDate[0]), JSON.stringify(newDate[1]));
     // return formatScrape(t, r);
 };
