@@ -5,11 +5,11 @@ mongoose.Promise = global.Promise; //USE ES6 PROMISES see:http://mongoosejs.com/
 require('dotenv').config({ path: 'variables.env' });
 
 // DB CONNECTION
-mongoose.connect(process.env.MONGODB_URI, { useMongoClient: true }).then(
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true }).then(
   () => { console.log('🔗 👌 🔗 👌 🔗 👌 🔗 👌 Mongoose connection open.') },
   err => { console.error(`🙅 🚫 🙅 🚫 🙅 🚫 🙅 🚫 → ${err.message}`)}
 ); // see mognoose callback on connect: http://mongoosejs.com/docs/connections.html#callback
-
+mongoose.set('useFindAndModify', false);
 // import mongoose models
 require('./models/Trash');
 

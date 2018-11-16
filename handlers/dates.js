@@ -1,12 +1,11 @@
-const scrape = require('./scrape')
-const moment = require('moment-timezone')
+const moment = require('moment-timezone');
 const mongoose = require('mongoose');
 const Trash = require('../models/Trash');
 
-formatScrape = async (t, r) => {
+exports.format = async (t, r) => {
     var now = moment().tz('America/Los_Angeles');
-    const tDay = moment(JSON.stringify(t), "MM-DD-YYYY").tz('America/Los_Angeles').add(8, "hours");
-    const rDay = moment(JSON.stringify(r), "MM-DD-YYYY").tz('America/Los_Angeles').add(8, "hours");
+    const tDay = moment(t, "MM-DD-YYYY").tz('America/Los_Angeles').add(8, "hours");
+    const rDay = moment(r, "MM-DD-YYYY").tz('America/Los_Angeles').add(8, "hours");
     var tHr = now.diff(tDay, "hours", true);
     var rHr = now.diff(rDay, "hours", true);
     var both = tHr === rHr ? true : false;
@@ -48,15 +47,30 @@ formatScrape = async (t, r) => {
             isTrue: both
         }
     };
-    // const moments = [tDay, rDay]
+    return data;
+}
+exports.setMessage = (trashDay) => {
+    if (trashDay.recycling.isTrue === true) {
+        return `Trash day ${trashDay.trash.fromNow}. Don't forget the recycling!`
+    } else {
+        return `Trash day ${trashDay.trash.fromNow}. No recycling this week. The next recycling day ${trashDay.recycling.fromNow}.`
+    }
+}
+
+exports.saveDay = async (date, message) => {
+    const data = await Trash.findOneAndUpdate({ name: 'mytrashday' }, { message, trash: date.trash, recycling: date.recycling }, { upsert: true, new: true }).exec();
     return data;
 }
 
-exports.updateDate = async () => {
-      const newDate = await scrape.pups();
-    console.log(newDate[0], newDate[1]);
-    // const t = "11/16/2018";
-    // const r = "11/24/2018"
-      return formatDate(JSON.stringify(newDate[0]), JSON.stringify(newDate[1]));
-    // return formatScrape(t, r);
+exports.getDaybyName = async (name) => {
+    const Name = await Trash.findOne({
+        name: 'mytrashday'
+    });
+    return Name;
+};
+
+exports.checkCurrentDay = async (date) => {
+    const newDay = moment(date).add(36, 'h');;
+    const check = moment().tz('America/Los_Angeles').isBefore(newDay);
+    return check;
 };
