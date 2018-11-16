@@ -73,6 +73,11 @@ formatDate = async (name, t, r) => {
 
 const trashName = 'mytrashday';
 
+exports.updateDate = async () => {
+  const newDate = await scrape.cityTrash();
+  return formatDate(trashName, newDate[0], newDate[1]);
+};
+
 exports.checkDate = async () => {
   const day = await getDaybyName(trashName);
   if (day === null) {

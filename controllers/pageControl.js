@@ -7,6 +7,15 @@ exports.homePage = async (req, res) => {
     Txt: req.body.trashDay.message});
 }
 
+exports.update = async (req, res) => {
+  const trashDay = await cityTrash.updateDate();
+  const message = await cityTrash.setMessage(trashDay); 
+  const saveDay = await cityTrash.saveDay(trashDay, message);
+  req.body.trashDay = saveDay;
+  console.log(req.body.trashDay);
+  res.status(200).end();
+}
+
 exports.check = async (req, res, next) => {
   const trashDay = await cityTrash.checkDate();
   const message = await cityTrash.setMessage(trashDay); 
@@ -22,10 +31,5 @@ exports.message = async (req, res) => {
   if (trashDay.trigger === true) {
     await messenger.email(trashDay.title, day);
   }
-  res.status(200).end();
-}
-
-exports.update = async (req, res) => {
-  console.log(req.body.trashDay);
   res.status(200).end();
 }
