@@ -24,3 +24,8 @@ exports.message = async (req, res) => {
   }
   res.status(200).end();
 }
+
+exports.update = async (req, res) => {
+  console.log(req.body.trashDay);
+  res.status(200).end();
+}
