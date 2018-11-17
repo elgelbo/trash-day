@@ -2,7 +2,7 @@ const scrape = require('../handlers/scrape')
 const dates = require('../handlers/dates')
 
 scraper = async () => {
-    const newDate = await scrape.pups();
+    const newDate = await scrape.pups();    
     const trashDay = await dates.format(newDate[0], newDate[1]);
     const message = await dates.setMessage(trashDay);
     const dbDates = await dates.saveDay(trashDay, message);

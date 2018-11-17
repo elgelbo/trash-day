@@ -1,7 +1,7 @@
 const moment = require('moment-timezone');
-
-scraper = (day) => {
-    const timeTill = day.trash.hrsTill;
+const email = require('../handlers/email')
+var checkWindow = exports.checkWindow = (day) => {
+    const timeTill = day.trash.hrsTill;  
     const now = moment().tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z');
     if (timeTill >= -14.5 && timeTill <= -13.5) {
         return {
@@ -40,16 +40,14 @@ scraper = (day) => {
         };
     }
 }
-
-
-exports.checkWindow = async (req, res, next) => {
-    const check = await scraper(req.body.trashDay);
-    console.log(check);
-    
-    // if (check.title === 'normPre' || 'normDo') {
-    //     await sendEmail(day.message);
-    //   } else if (title === 'altWarn') {
-    //     const message = `No trash pickup on Friday! ${day.message}`
-    //     await sendEmail(message);
-    // }
+// TODO: SET UP EMAIL TRANSPORT
+exports.checkWindow = async (req, res) => {
+    const check = await checkWindow(req.body.trashDay);
+    if (check.title === 'normPre' || 'normDo') {
+        await email.sendEmail(req.body.trashDay.message);
+      } else if (title === 'altWarn') {
+        const message = `No trash pickup on Friday! ${req.body.trashDay.message}`
+        await email.sendEmail(message);
+    }
+    res.status(200).end();
 }
