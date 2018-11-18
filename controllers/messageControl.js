@@ -71,15 +71,19 @@ var check = exports.check = (day) => {
 // TODO: SET UP EMAIL TRANSPORT
 exports.checkWindow = async (req, res) => {
     const checked = await check(req.body.trashDay);
-    console.log(checked.title, checked.trigger);
-    if (check.title === 'normPre' || 'normDo') {
+    console.log(checked);
+    if (checked.title === 'normPre' || checked.title === 'normDo') {
         await email.sendEmail(req.body.trashDay.message);
-    } else if (title === 'altWarn') {
+    } 
+    else if (checked.title === 'altWarn') {
         const message = `No trash pickup on Friday! ${req.body.trashDay.message}`
         await email.sendEmail(message);
-    } else if (title === 'altWarnDay') {
+    }
+     else if (checked.title === 'altWarnDay') {
         const message = `No trash pickup today! ${req.body.trashDay.message}`
         await email.sendEmail(message);
     }
+    // const message = `TEST! ${req.body.trashDay.message}`
+    // await email.sendEmail(message);
     res.status(200).end();
 }
