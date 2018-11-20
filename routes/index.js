@@ -10,5 +10,6 @@ const { catchErrors } = require('../handlers/errorHandlers')
 router.get('/', catchErrors(updateControl.check), pageControl.home);
 router.get('/message', catchErrors(updateControl.check), catchErrors(messageControl.checkWindow));
 router.get('/update', catchErrors(updateControl.update), pageControl.update);
+router.get('/test', catchErrors(updateControl.check), catchErrors(messageControl.testEmail));
 
 module.exports = router;

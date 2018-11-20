@@ -4,6 +4,7 @@ mongoose.Promise = global.Promise;
 var trashSchema = new mongoose.Schema({
   name: String,
   message: String,
+  holiday: Boolean,
   trash: {
     date: String,
     iso: Date,

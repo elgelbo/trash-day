@@ -1,10 +1,12 @@
 const scrape = require('../handlers/scrape')
 const dates = require('../handlers/dates')
+const moment = require('moment-timezone');
 
 scraper = async () => {
-    const newDate = await scrape.pups();    
-    const trashDay = await dates.format(newDate[0], newDate[1]);
-    const message = await dates.setMessage(trashDay);
+    const newDate = await scrape.pups();
+    const converted = await dates.convert(newDate[0], newDate[1]);
+    const trashDay = await dates.format(converted[0], converted[1]);  
+    const message = await dates.setMessage(trashDay);  
     const dbDates = await dates.saveDay(trashDay, message);
     return dbDates;
 }
@@ -24,13 +26,15 @@ exports.check = async (req, res, next) => {
         next();
     } else {
         const current = await dates.checkCurrentDay(dbDates.trash.iso);
-        req.body.trashDay = dbDates;
         if (current === false || current === null) {
             const theDay = await scraper();
             req.body.trashDay = theDay;
             next();
         } else {
-            req.body.trashDay = dbDates;
+            const trashDay = await dates.format(moment(dbDates.trash.iso), moment(dbDates.recycling.iso));  
+            const message = await dates.setMessage(trashDay);  
+            const newDates = await dates.saveDay(trashDay, message);            
+            req.body.trashDay = newDates;
             next();
         }
     }

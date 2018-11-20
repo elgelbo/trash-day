@@ -2,19 +2,27 @@ const moment = require('moment-timezone');
 const mongoose = require('mongoose');
 const Trash = require('../models/Trash');
 
-exports.format = async (t, r) => {
-    var now = moment().tz('America/Los_Angeles');
+exports.convert = async (t, r) => {
     const tDay = moment(t, "MM-DD-YYYY").tz('America/Los_Angeles').add(8, "hours");
     const rDay = moment(r, "MM-DD-YYYY").tz('America/Los_Angeles').add(8, "hours");
+    return [tDay, rDay];    
+}
+
+exports.format = async (t, r) => {
+    var now = moment().tz('America/Los_Angeles');
+    const tDay = t;
+    const rDay = r;  
     var tHr = now.diff(tDay, "hours", true);
     var rHr = now.diff(rDay, "hours", true);
     var both = tHr === rHr ? true : false;
-    console.log(tHr);
-    console.log(rHr);
-    console.log(both);
+    var holiday = tDay.day() != 5 ? true : false;
+    console.log('Time Till Trash Day: ' + tHr);
+    console.log('Recyling Day: ' + both);
+    console.log('Holiday Schedule: ' + holiday);
     var tDayTill = parseFloat(tHr / 24);
     var rDayTill = parseFloat(rHr / 24);
     const data = {
+        holiday,
         trash: {
             date: tDay.format('MMMM Do YYYY, h:mm:ss a z'),
             iso: tDay.toISOString(),
@@ -49,16 +57,20 @@ exports.format = async (t, r) => {
     };
     return data;
 }
+
 exports.setMessage = (trashDay) => {
+    var message = '';
+    message += `Trash day ${trashDay.trash.fromNow}. `
     if (trashDay.recycling.isTrue === true) {
-        return `Trash day ${trashDay.trash.fromNow}. Don't forget the recycling!`
+        message += `Don't forget the recycling!`
     } else {
-        return `Trash day ${trashDay.trash.fromNow}. No recycling this week. The next recycling day ${trashDay.recycling.fromNow}.`
+        message += `No recycling this week. The next recycling day ${trashDay.recycling.fromNow}.`
     }
+    return message;
 }
 
 exports.saveDay = async (date, message) => {
-    const data = await Trash.findOneAndUpdate({ name: 'mytrashday' }, { message, trash: date.trash, recycling: date.recycling }, { upsert: true, new: true }).exec();
+    const data = await Trash.findOneAndUpdate({ name: 'mytrashday' }, { message, holiday: date.holiday, trash: date.trash, recycling: date.recycling }, { upsert: true, new: true }).exec();
     return data;
 }
 

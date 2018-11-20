@@ -30,8 +30,7 @@ var check = exports.check = (day) => {
             tMinus: timeTill,
             it: day.trash.date
         };
-    } else if (day.trash.day != 'Friday') {
-        console.log('holiday sch');
+    } else if (day.holiday === true) {
         const alty = altTill(now);
         if (now.day() === 4 && alty >= -14.5 && alty <= -13.5) {
             return {
@@ -83,7 +82,13 @@ exports.checkWindow = async (req, res) => {
         const message = `No trash pickup today! ${req.body.trashDay.message}`
         await email.sendEmail(message);
     }
-    // const message = `TEST! ${req.body.trashDay.message}`
-    // await email.sendEmail(message);
+    res.status(200).end();
+}
+
+exports.testEmail = async (req, res) => {
+    const checked = await check(req.body.trashDay);
+    console.log(checked);
+    const message = `TEST! ${req.body.trashDay.message}`
+    await email.sendEmail(message);
     res.status(200).end();
 }
