@@ -1,4 +1,3 @@
-const moment = require('moment-timezone')
 const puppeteer = require('puppeteer');
 const url = 'https://getitdone.force.com/ESD_TrashCollectionSchedule';
 
@@ -34,8 +33,6 @@ exports.pups = async () => {
     const rDate = await page.evaluateHandle(() => document.querySelector('table.twelve > tbody:nth-child(1) > tr:nth-child(3) > td:nth-child(4)').textContent);
     const trashD = tDate._remoteObject.value.trim();
     const recyD = rDate._remoteObject.value.trim();
-    // const trashD = moment(tDate._remoteObject.value.trim(), "MM-DD-YYYY").tz('America/Los_Angeles').add(8, "hours").toISOString();
-    // const recyD = moment(rDate._remoteObject.value.trim(), "MM-DD-YYYY").tz('America/Los_Angeles').add(8, "hours").toISOString();
     await browser.close();
     return [trashD, recyD];
   } catch (e) {

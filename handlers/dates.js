@@ -1,17 +1,17 @@
 const moment = require('moment-timezone');
 const mongoose = require('mongoose');
 const Trash = require('../models/Trash');
+var now = moment().tz('America/Los_Angeles');
 
 exports.convert = async (t, r) => {
     const tDay = moment(t, "MM-DD-YYYY").tz('America/Los_Angeles').add(8, "hours");
     const rDay = moment(r, "MM-DD-YYYY").tz('America/Los_Angeles').add(8, "hours");
-    return [tDay, rDay];    
+    return [tDay, rDay];
 }
 
 exports.format = async (t, r) => {
-    var now = moment().tz('America/Los_Angeles');
     const tDay = t;
-    const rDay = r;  
+    const rDay = r;
     var tHr = now.diff(tDay, "hours", true);
     var rHr = now.diff(rDay, "hours", true);
     var both = tHr === rHr ? true : false;
@@ -69,9 +69,15 @@ exports.setMessage = (trashDay) => {
     return message;
 }
 
-exports.saveDay = async (date, message) => {
-    const data = await Trash.findOneAndUpdate({ name: 'mytrashday' }, { message, holiday: date.holiday, trash: date.trash, recycling: date.recycling }, { upsert: true, new: true }).exec();
-    return data;
+exports.saveDay = async (date, message, lastScrape) => {
+    const update = now.format('MMMM Do YYYY, h:mm:ss a z');
+    if (lastScrape === true) {
+        const data = await Trash.findOneAndUpdate({ name: 'mytrashday' }, { update, scrape: update, message, holiday: date.holiday, trash: date.trash, recycling: date.recycling }, { upsert: true, new: true }).exec();
+        return data;
+    } else {
+        const data = await Trash.findOneAndUpdate({ name: 'mytrashday' }, { update, message, holiday: date.holiday, trash: date.trash, recycling: date.recycling }, { upsert: true, new: true }).exec();
+        return data;
+    }
 }
 
 exports.getDaybyName = async (name) => {

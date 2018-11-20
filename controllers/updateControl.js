@@ -7,7 +7,7 @@ scraper = async () => {
     const converted = await dates.convert(newDate[0], newDate[1]);
     const trashDay = await dates.format(converted[0], converted[1]);  
     const message = await dates.setMessage(trashDay);  
-    const dbDates = await dates.saveDay(trashDay, message);
+    const dbDates = await dates.saveDay(trashDay, message, true);
     return dbDates;
 }
 

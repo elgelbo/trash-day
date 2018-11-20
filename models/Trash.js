@@ -5,6 +5,8 @@ var trashSchema = new mongoose.Schema({
   name: String,
   message: String,
   holiday: Boolean,
+  update: String,
+  scrape: String,
   trash: {
     date: String,
     iso: Date,
@@ -25,29 +27,3 @@ var trashSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('Trash', trashSchema)
-
-
-// var data = {
-//   Now: {
-//     date: now.format("LLLL"),
-//     iso: now.toISOString(),
-//     day: now.format("dddd")
-//   },
-//   Trash: {
-//     date: t.format("LLLL"),
-//     iso: t.toISOString(),
-//     day: t.format("dddd"),
-//     daysTill: tDayTill,
-//     hrsTill: tHr,
-//     fromNow: t.fromNow()
-//   },
-//   Recycling: {
-//     date: r.format("LLLL"),
-//     iso: r.toISOString(),
-//     day: r.format("dddd"),
-//     daysTill: rDayTill,
-//     hrsTill: rHr,
-//     fromNow: r.fromNow(),
-//     isTrue: both
-//   }
-// };
