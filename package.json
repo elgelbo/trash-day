@@ -1,6 +1,6 @@
 {
-  "name": "trash-day-2",
-  "version": "2.0.0",
+  "name": "trash-day",
+  "version": "2.1.0",
   "private": true,
   "engines": {
     "node": "^8.11.1"
@@ -19,7 +19,7 @@
     "express": "^4.16.4",
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.23",
-    "mongoose": ">=5.3.12",
+    "mongoose": "^5.3.14",
     "puppeteer": "^1.10.0"
   },
   "devDependencies": {
@@ -28,9 +28,9 @@
     "babel-preset-env": "^1.7.0",
     "css-loader": "^1.0.1",
     "extract-text-webpack-plugin": "4.0.0-alpha.0",
-    "nodemon": "^1.18.6",
+    "nodemon": "^1.18.7",
     "style-loader": "^0.22.1",
-    "webpack": "^4.25.1",
+    "webpack": "^4.26.1",
     "webpack-cli": "^3.1.2"
   }
 }
