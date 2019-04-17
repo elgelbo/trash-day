@@ -7,6 +7,7 @@ var trashSchema = new mongoose.Schema({
   holiday: Boolean,
   update: String,
   scrape: String,
+  payVictor: Boolean,
   trash: {
     date: String,
     iso: Date,
