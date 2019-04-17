@@ -162,7 +162,7 @@ exports.sendEmail = async (message) => {
       const { headers, body } = response;
     }
     else {
-      console.log(result);
+      console.log('Sent');
     }
   });
 }

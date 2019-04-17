@@ -3,9 +3,9 @@ const url = 'https://getitdone.force.com/ESD_TrashCollectionSchedule';
 
 exports.pups = async () => {
   // for heroku prod
-  const browser = await puppeteer.launch({ignoreHTTPSErrors: true, args: ['--no-sandbox', '--disable-setuid-sandbox']});
+  // const browser = await puppeteer.launch({ignoreHTTPSErrors: true, args: ['--no-sandbox', '--disable-setuid-sandbox']});
   // for testing/observing local
-  // const browser = await puppeteer.launch({ headless: false, ignoreHTTPSErrors: true });
+  const browser = await puppeteer.launch({ headless: false, ignoreHTTPSErrors: true });
   console.log('i am the pup');
   try {
     const page = await browser.newPage();

@@ -4,8 +4,6 @@ const moment = require('moment-timezone');
 
 scraper = async () => {
     const newDate = await scrape.pups();
-    console.log(newDate);
-    
     const converted = await dates.convert(newDate[0], newDate[1]);
     const trashDay = await dates.format(converted[0], converted[1]);  
     const message = await dates.setMessage(trashDay);  
