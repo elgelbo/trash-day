@@ -70,6 +70,7 @@ var check = exports.check = (day) => {
 // TODO: SET UP EMAIL TRANSPORT
 exports.checkWindow = async (req, res) => {
     const checked = await check(req.body.trashDay);
+    console.log(checked);
     if (checked.title === 'normPre' || checked.title === 'normDo') {
         await email.sendEmail(req.body.trashDay.message);
     } 

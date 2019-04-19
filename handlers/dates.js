@@ -2,7 +2,6 @@ const moment = require('moment-timezone');
 const mongoose = require('mongoose');
 const Trash = require('../models/Trash');
 var now = moment().tz('America/Los_Angeles');
-const moEnd = now.endOf('month');
 exports.convert = async (t, r) => {
     const tDay = moment(t, "MM-DD-YYYY").tz('America/Los_Angeles').add(8, "hours");
     const rDay = moment(r, "MM-DD-YYYY").tz('America/Los_Angeles').add(8, "hours");
@@ -19,15 +18,12 @@ const getFri = (it) => {
 exports.format = async (t, r) => {
     const tDay = t;
     const rDay = r;
-    const lastFri = getFri(moEnd)
+    const lastFri = getFri(now.clone().endOf('month') )
     var payVictor = lastFri.dayOfYear() === tDay.dayOfYear() ? true : false;    
     var tHr = now.diff(tDay, "hours", true);
     var rHr = now.diff(rDay, "hours", true);
     var both = tHr === rHr ? true : false;
     var holiday = tDay.day() != 5 ? true : false;
-    console.log('Time Till Trash Day: ' + tHr);
-    console.log('Recyling Day: ' + both);
-    console.log('Holiday Schedule: ' + holiday);
     var tDayTill = parseFloat(tHr / 24);
     var rDayTill = parseFloat(rHr / 24);
     const data = {
