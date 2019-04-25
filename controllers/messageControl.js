@@ -11,9 +11,29 @@ altTill = (now) => {
     }
 }
 
-var check = exports.check = (day) => {
-    const timeTill = day.trash.hrsTill;
+var check = exports.check = (day) => {   
+    const timeTill = day.trash.hrsTill-9;
     const now = moment().tz('America/Los_Angeles');
+    if (day.payVictor === true) {
+        if (timeTill >= -38.5 && timeTill <= -37.5) {
+            return {
+                title: 'gardPre',
+                trigger: true,
+                current: now.format('MMMM Do YYYY, h:mm:ss a z'),
+                tMinus: timeTill,
+                it: day.trash.date
+            };
+        }
+        if (timeTill >= -26.5 && timeTill <= -25.5) {
+            return {
+                title: 'gardDo',
+                trigger: true,
+                current: now.format('MMMM Do YYYY, h:mm:ss a z'),
+                tMinus: timeTill,
+                it: day.trash.date
+            };
+        }
+    }
     if (timeTill >= -14.5 && timeTill <= -13.5) {
         return {
             title: 'normPre',
@@ -80,6 +100,14 @@ exports.checkWindow = async (req, res) => {
     }
      else if (checked.title === 'altWarnDay') {
         const message = `No trash pickup today! ${req.body.trashDay.message}`
+        await email.sendEmail(message);
+    }
+    if (checked.title === 'gardPre') {
+        const message = `Don't forget to pay Victor tomorrow!`
+        await email.sendEmail(message);
+    }
+    if (checked.title === 'gardDo') {
+        const message = `Don't forget to pay Victor today!`
         await email.sendEmail(message);
     }
     res.status(200).end();
