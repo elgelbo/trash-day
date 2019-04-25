@@ -12,7 +12,7 @@ altTill = (now) => {
 }
 
 var check = exports.check = (day) => {   
-    const timeTill = day.trash.hrsTill-9;
+    const timeTill = day.trash.hrsTill;
     const now = moment().tz('America/Los_Angeles');
     if (day.payVictor === true) {
         if (timeTill >= -38.5 && timeTill <= -37.5) {
