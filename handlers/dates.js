@@ -9,16 +9,14 @@ exports.convert = async (t, r) => {
 }
 
 const getFri = (it) => {
-	const thisOne = it.month();
-	const nextOne = it.clone().add(2, 'w').month()
-	if (thisOne < nextOne) {
-		return it;
-	} else {
-		const theIt = now.clone().endOf('month')
-		while (theIt.day() !== 5) {
-			theIt.subtract(1, 'day');
-		}
-		return theIt;
+	const theEnd = now.clone().endOf('month');
+	while (theEnd.day() !== 5) {
+		theEnd.subtract(1, 'day');
+	}
+	if (it.dayOfYear() === theEnd) {
+		return theEnd.dayOfYear();
+	} else if (theEnd.clone().subtract(1, 'w').dayOfYear()){
+		return theEnd.clone().subtract(1, 'w').dayOfYear();
 	}
 }
 
@@ -26,7 +24,7 @@ exports.format = async (t, r) => {
 	const tDay = t;
 	const rDay = r;
 	const lastFri = getFri(rDay.clone());
-	var payVictor = lastFri.dayOfYear() === tDay.dayOfYear() ? true : false;
+	var payVictor = lastFri === tDay.dayOfYear() ? true : false;
 	var tHr = now.diff(tDay, "hours", true);
 	var rHr = now.diff(rDay, "hours", true);
 	var both = tHr === rHr ? true : false;
