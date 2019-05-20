@@ -3,101 +3,108 @@ const mongoose = require('mongoose');
 const Trash = require('../models/Trash');
 var now = moment().tz('America/Los_Angeles');
 exports.convert = async (t, r) => {
-    const tDay = moment(t, "MM-DD-YYYY").tz('America/Los_Angeles').add(8, "hours");
-    const rDay = moment(r, "MM-DD-YYYY").tz('America/Los_Angeles').add(8, "hours");
-    return [tDay, rDay];
+	const tDay = moment(t, "MM-DD-YYYY").tz('America/Los_Angeles').add(8, "hours");
+	const rDay = moment(r, "MM-DD-YYYY").tz('America/Los_Angeles').add(8, "hours");
+	return [tDay, rDay];
 }
 
 const getFri = (it) => {
-    while (it.day() !== 5) {
-      it.subtract(1, 'day');
-    }
-    return it;
+	const thisOne = it.month();
+	const nextOne = it.clone().add(2, 'w').month()
+	if (thisOne < nextOne) {
+		return it;
+	} else {
+		const theIt = now.clone().endOf('month')
+		while (theIt.day() !== 5) {
+			theIt.subtract(1, 'day');
+		}
+		return theIt;
+	}
 }
 
 exports.format = async (t, r) => {
-    const tDay = t;
-    const rDay = r;
-    const lastFri = getFri(now.clone().endOf('month') )
-    var payVictor = lastFri.dayOfYear() === tDay.dayOfYear() ? true : false;    
-    var tHr = now.diff(tDay, "hours", true);
-    var rHr = now.diff(rDay, "hours", true);
-    var both = tHr === rHr ? true : false;
-    var holiday = tDay.day() != 5 ? true : false;
-    var tDayTill = parseFloat(tHr / 24);
-    var rDayTill = parseFloat(rHr / 24);
-    const data = {
-        payVictor,
-        holiday,
-        trash: {
-            date: tDay.format('MMMM Do YYYY, h:mm:ss a z'),
-            iso: tDay.toISOString(),
-            day: tDay.format("dddd"),
-            daysTill: tDayTill,
-            hrsTill: tHr,
-            fromNow: tDay.calendar(null, {
-                sameDay: '[is today]',
-                nextDay: '[is tomorrow]',
-                nextWeek: '[is] dddd',
-                lastDay: '[was yesterday]',
-                lastWeek: '[was last] dddd',
-                sameElse: '[is on] dddd, MMMM Do'
-            }),
-        },
-        recycling: {
-            date: rDay.format('MMMM Do YYYY, h:mm:ss a z'),
-            iso: rDay.toISOString(),
-            day: rDay.format("dddd"),
-            daysTill: rDayTill,
-            hrsTill: rHr,
-            fromNow: rDay.calendar(null, {
-                sameDay: '[is today]',
-                nextDay: '[is tomorrow]',
-                nextWeek: '[is] dddd',
-                lastDay: '[was yesterday]',
-                lastWeek: '[was last] dddd',
-                sameElse: '[is on] dddd, MMMM Do'
-            }),
-            isTrue: both
-        }
-    };
-    return data;
+	const tDay = t;
+	const rDay = r;
+	const lastFri = getFri(rDay.clone());
+	var payVictor = lastFri.dayOfYear() === tDay.dayOfYear() ? true : false;
+	var tHr = now.diff(tDay, "hours", true);
+	var rHr = now.diff(rDay, "hours", true);
+	var both = tHr === rHr ? true : false;
+	var holiday = tDay.day() != 5 ? true : false;
+	var tDayTill = parseFloat(tHr / 24);
+	var rDayTill = parseFloat(rHr / 24);
+	const data = {
+		payVictor,
+		holiday,
+		trash: {
+			date: tDay.format('MMMM Do YYYY, h:mm:ss a z'),
+			iso: tDay.toISOString(),
+			day: tDay.format("dddd"),
+			daysTill: tDayTill,
+			hrsTill: tHr,
+			fromNow: tDay.calendar(null, {
+				sameDay: '[is today]',
+				nextDay: '[is tomorrow]',
+				nextWeek: '[is] dddd',
+				lastDay: '[was yesterday]',
+				lastWeek: '[was last] dddd',
+				sameElse: '[is on] dddd, MMMM Do'
+			}),
+		},
+		recycling: {
+			date: rDay.format('MMMM Do YYYY, h:mm:ss a z'),
+			iso: rDay.toISOString(),
+			day: rDay.format("dddd"),
+			daysTill: rDayTill,
+			hrsTill: rHr,
+			fromNow: rDay.calendar(null, {
+				sameDay: '[is today]',
+				nextDay: '[is tomorrow]',
+				nextWeek: '[is] dddd',
+				lastDay: '[was yesterday]',
+				lastWeek: '[was last] dddd',
+				sameElse: '[is on] dddd, MMMM Do'
+			}),
+			isTrue: both
+		}
+	};
+	return data;
 }
 
 exports.setMessage = (trashDay) => {
-    var message = '';
-    message += `Trash day ${trashDay.trash.fromNow}. `
-    if (trashDay.recycling.isTrue === true) {
-        message += `Don't forget the recycling!`
-    } else {
-        message += `No recycling this week.`
-    }
-    if (trashDay.payVictor === true) {
-        message += ` Pay Victor this week!`;
-    }
-    return message;
+	var message = '';
+	message += `Trash day ${trashDay.trash.fromNow}. `
+	if (trashDay.recycling.isTrue === true) {
+		message += `Don't forget the recycling!`
+	} else {
+		message += `No recycling this week.`
+	}
+	if (trashDay.payVictor === true) {
+		message += ` Pay Victor this week!`;
+	}
+	return message;
 }
 
 exports.saveDay = async (date, message, lastScrape) => {
-    const update = now.format('MMMM Do YYYY, h:mm:ss a z');
-    if (lastScrape === true) {
-        const data = await Trash.findOneAndUpdate({ name: 'mytrashday' }, { update, scrape: update, message, holiday: date.holiday, payVictor: date.payVictor, trash: date.trash, recycling: date.recycling }, { upsert: true, new: true }).exec();
-        return data;
-    } else {
-        const data = await Trash.findOneAndUpdate({ name: 'mytrashday' }, { update, message, holiday: date.holiday, trash: date.trash, recycling: date.recycling }, { upsert: true, new: true }).exec();
-        return data;
-    }
+	const update = now.format('MMMM Do YYYY, h:mm:ss a z');
+	if (lastScrape === true) {
+		const data = await Trash.findOneAndUpdate({ name: 'mytrashday' }, { update, scrape: update, message, holiday: date.holiday, payVictor: date.payVictor, trash: date.trash, recycling: date.recycling }, { upsert: true, new: true }).exec();
+		return data;
+	} else {
+		const data = await Trash.findOneAndUpdate({ name: 'mytrashday' }, { update, message, holiday: date.holiday, trash: date.trash, recycling: date.recycling }, { upsert: true, new: true }).exec();
+		return data;
+	}
 }
 
 exports.getDaybyName = async (name) => {
-    const Name = await Trash.findOne({
-        name: 'mytrashday'
-    });
-    return Name;
+	const Name = await Trash.findOne({
+		name: 'mytrashday'
+	});
+	return Name;
 };
 
 exports.checkCurrentDay = async (date) => {
-    const newDay = moment(date).add(36, 'h');;
-    const check = moment().tz('America/Los_Angeles').isBefore(newDay);
-    return check;
+	const newDay = moment(date).add(36, 'h');;
+	const check = moment().tz('America/Los_Angeles').isBefore(newDay);
+	return check;
 };

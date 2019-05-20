@@ -20,7 +20,7 @@ exports.pups = async () => {
 
     await page.click('#SearchSiteBtn');
 
-    const btn = 'label strong a';
+    const btn = '#pgid\\:fmId\\:j_id44\\:j_id45\\:j_id62 > div > a';
     await page.waitFor(btn);
     await page.click(btn);
 
