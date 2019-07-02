@@ -1,7 +1,7 @@
 const moment = require('moment-timezone');
 const mongoose = require('mongoose');
 const Trash = require('../models/Trash');
-var now = moment().tz('America/Los_Angeles');
+const now = moment();
 exports.convert = async (t, r) => {
 	const tDay = moment(t, "MM-DD-YYYY").tz('America/Los_Angeles').add(8, "hours");
 	const rDay = moment(r, "MM-DD-YYYY").tz('America/Los_Angeles').add(8, "hours");

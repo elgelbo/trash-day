@@ -7,8 +7,9 @@
   },
   "scripts": {
     "start": "node start.js",
+    "dev": "concurrently \"npm:watch\" \"npm:build\"",
     "build": "npx webpack --mode development --config webpack.config.js",
-    "watch": "npm run build && nodemon run start",
+    "watch": "nodemon run start",
     "postinstall": "npm run build"
   },
   "dependencies": {
@@ -26,9 +27,10 @@
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
     "babel-preset-env": "^1.7.0",
+    "concurrently": "^4.1.1",
     "css-loader": "^1.0.1",
     "extract-text-webpack-plugin": "4.0.0-alpha.0",
-    "nodemon": "^1.18.7",
+    "nodemon": "^1.19.1",
     "style-loader": "^0.22.1",
     "webpack": "^4.26.1",
     "webpack-cli": "^3.1.2"

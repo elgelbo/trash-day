@@ -29,7 +29,8 @@ exports.check = async (req, res, next) => {
             req.body.trashDay = theDay;
             next();
         } else {
-            const trashDay = await dates.format(moment(dbDates.trash.iso), moment(dbDates.recycling.iso));  
+            const trashDay = await dates.format(moment(dbDates.trash.iso), moment(dbDates.recycling.iso));
+            console.log(trashDay);
             const message = await dates.setMessage(trashDay);  
             const newDates = await dates.saveDay(trashDay, message);            
             req.body.trashDay = newDates;
