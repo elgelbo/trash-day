@@ -1,10 +1,10 @@
-const moment = require('moment-timezone');
+const moment = require('moment');
 const mongoose = require('mongoose');
 const Trash = require('../models/Trash');
 const now = moment();
 exports.convert = async (t, r) => {
-	const tDay = moment(t, "MM-DD-YYYY").tz('America/Los_Angeles').add(8, "hours");
-	const rDay = moment(r, "MM-DD-YYYY").tz('America/Los_Angeles').add(8, "hours");
+	const tDay = moment(t, "MM-DD-YYYY").add(8, "hours");
+	const rDay = moment(r, "MM-DD-YYYY").add(8, "hours");
 	return [tDay, rDay];
 }
 
@@ -31,6 +31,7 @@ exports.format = async (t, r) => {
 	var holiday = tDay.day() != 5 ? true : false;
 	var tDayTill = parseFloat(tHr / 24);
 	var rDayTill = parseFloat(rHr / 24);
+
 	const data = {
 		payVictor,
 		holiday,
@@ -103,6 +104,6 @@ exports.getDaybyName = async (name) => {
 
 exports.checkCurrentDay = async (date) => {
 	const newDay = moment(date).add(36, 'h');;
-	const check = moment().tz('America/Los_Angeles').isBefore(newDay);
+	const check = moment().isBefore(newDay);
 	return check;
 };

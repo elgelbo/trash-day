@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  p=Txt
+
+block append scripts
+  script(type="text/javascript")!= "var myData = " + JSON.stringify(Obj)
+  script(type="text/javascript")!= console.log(myData)
+  script.
+    console.log('Hello Jade!')
+    //- console.log(Obj)
+  script
+    -
+      var data = JSON.stringify(Obj);
+      console.log(data);

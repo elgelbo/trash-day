@@ -1,38 +1,29 @@
 {
-  "name": "trash-day",
-  "version": "2.1.1",
-  "private": true,
-  "engines": {
-    "node": "^8.11.1"
-  },
+  "name": "parcel-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "start.js",
   "scripts": {
-    "start": "node start.js",
-    "dev": "concurrently \"npm:watch\" \"npm:build\"",
-    "build": "npx webpack --mode development --config webpack.config.js",
-    "watch": "nodemon run start",
-    "postinstall": "npm run build"
+    "dev": "concurrently \"npm:watch\" \"npm:build-watch\"",
+    "start": "node start",
+    "watch": "nodemon --ignore src/ --ignore public/ start",
+    "build-watch": "parcel watch ./src/scripts/test.js -d public",
+    "build": "parcel build ./src/scripts/test.js -d public/js"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "@sendgrid/mail": "^6.3.1",
-    "body-parser": "^1.18.3",
-    "dotenv": ">=6.1.0",
-    "ejs": "^2.6.1",
-    "express": "^4.16.4",
-    "moment": "^2.22.2",
-    "moment-timezone": "^0.5.23",
-    "mongoose": "^5.3.14",
-    "puppeteer": "^1.10.0"
+    "@sendgrid/mail": "^6.4.0",
+    "express": "^4.17.1",
+    "moment": "^2.24.0",
+    "mongoose": "^5.6.0",
+    "pug": "^2.0.4",
+    "puppeteer": "^1.18.1"
   },
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.5",
-    "babel-preset-env": "^1.7.0",
-    "concurrently": "^4.1.1",
-    "css-loader": "^1.0.1",
-    "extract-text-webpack-plugin": "4.0.0-alpha.0",
+    "concurrently": "^4.1.0",
     "nodemon": "^1.19.1",
-    "style-loader": "^0.22.1",
-    "webpack": "^4.26.1",
-    "webpack-cli": "^3.1.2"
+    "parcel-bundler": "^1.12.3"
   }
 }

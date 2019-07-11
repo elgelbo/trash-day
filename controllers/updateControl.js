@@ -1,6 +1,6 @@
 const scrape = require('../handlers/scrape')
 const dates = require('../handlers/dates')
-const moment = require('moment-timezone');
+const moment = require('moment');
 
 scraper = async () => {
     const newDate = await scrape.pups();
