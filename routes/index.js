@@ -2,10 +2,12 @@ const express = require('express');
 const router = express.Router();
 // IMPORT CONTROLLERS
 const pageControl = require('../controllers/pageControl');
-const { catchErrors } = require('../handlers/errorHandlers')
+const apiControl = require('../controllers/apiControl');
 const updateControl = require('../controllers/updateControl');
+const { catchErrors } = require('../handlers/errorHandlers')
 
 router.get('/', catchErrors(updateControl.check), pageControl.home);
+router.get('/api/current', catchErrors(updateControl.check), apiControl.current);
 
 module.exports = router;
 

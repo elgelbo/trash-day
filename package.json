@@ -7,14 +7,16 @@
     "dev": "concurrently \"npm:watch\" \"npm:build-watch\"",
     "start": "node start",
     "watch": "nodemon --ignore src/ --ignore public/ start",
-    "build-watch": "parcel watch ./src/scripts/test.js -d public",
-    "build": "parcel build ./src/scripts/test.js -d public/js"
+    "build-watch": "parcel watch ./src/main.js -d public",
+    "build": "parcel build ./src/main.js -d public"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@sendgrid/mail": "^6.4.0",
+    "axios": "^0.19.0",
+    "axioss": "^0.19.0-beta.1",
     "express": "^4.17.1",
     "moment": "^2.24.0",
     "mongoose": "^5.6.0",
