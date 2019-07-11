@@ -19,12 +19,12 @@
     "axioss": "^0.19.0-beta.1",
     "express": "^4.17.1",
     "moment": "^2.24.0",
-    "mongoose": "^5.6.0",
+    "mongoose": "^5.6.4",
     "pug": "^2.0.4",
     "puppeteer": "^1.18.1"
   },
   "devDependencies": {
-    "concurrently": "^4.1.0",
+    "concurrently": "^4.1.1",
     "nodemon": "^1.19.1",
     "parcel-bundler": "^1.12.3"
   }

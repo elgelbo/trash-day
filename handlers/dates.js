@@ -2,6 +2,7 @@ const moment = require('moment');
 const mongoose = require('mongoose');
 const Trash = require('../models/Trash');
 const now = moment();
+
 exports.convert = async (t, r) => {
 	const tDay = moment(t, "MM-DD-YYYY").add(8, "hours");
 	const rDay = moment(r, "MM-DD-YYYY").add(8, "hours");
@@ -31,7 +32,6 @@ exports.format = async (t, r) => {
 	var holiday = tDay.day() != 5 ? true : false;
 	var tDayTill = parseFloat(tHr / 24);
 	var rDayTill = parseFloat(rHr / 24);
-
 	const data = {
 		payVictor,
 		holiday,
@@ -67,6 +67,7 @@ exports.format = async (t, r) => {
 			isTrue: both
 		}
 	};
+	console.log(data);
 	return data;
 }
 
@@ -85,7 +86,7 @@ exports.setMessage = (trashDay) => {
 }
 
 exports.saveDay = async (date, message, lastScrape) => {
-	const update = now.format('MMMM Do YYYY, h:mm:ss a z');
+	const update = moment().format('MMMM Do YYYY, h:mm:ss a');
 	if (lastScrape === true) {
 		const data = await Trash.findOneAndUpdate({ name: 'mytrashday' }, { update, scrape: update, message, holiday: date.holiday, payVictor: date.payVictor, trash: date.trash, recycling: date.recycling }, { upsert: true, new: true }).exec();
 		return data;
