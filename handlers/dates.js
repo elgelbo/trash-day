@@ -26,8 +26,8 @@ exports.format = async (t, r) => {
 	const rDay = r;
 	const lastFri = getFri(rDay.clone());
 	var payVictor = lastFri === tDay.dayOfYear() ? true : false;
-	var tHr = now.diff(tDay, "hours", true);
-	var rHr = now.diff(rDay, "hours", true);
+	var tHr = moment().diff(tDay, "hours", true);
+	var rHr = moment().diff(rDay, "hours", true);
 	var both = tHr === rHr ? true : false;
 	var holiday = tDay.day() != 5 ? true : false;
 	var tDayTill = parseFloat(tHr / 24);
@@ -67,7 +67,6 @@ exports.format = async (t, r) => {
 			isTrue: both
 		}
 	};
-	console.log(data);
 	return data;
 }
 

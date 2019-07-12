@@ -81,7 +81,7 @@ var check = exports.check = (day) => {
         return {
             title: 'none',
             trigger: false,
-            current: now.format('MMMM Do YYYY, h:mm:ss a z'),
+            current: moment().format('MMMM Do YYYY, h:mm:ss a z'),
             tMinus: timeTill,
             it: day.trash.date
         };
@@ -91,25 +91,25 @@ var check = exports.check = (day) => {
 exports.checkWindow = async (req, res) => {
     const checked = await check(req.body.trashDay);
     console.log(checked);
-    // if (checked.title === 'normPre' || checked.title === 'normDo') {
-    //     await email.sendEmail(req.body.trashDay.message);
-    // } 
-    // else if (checked.title === 'altWarn') {
-    //     const message = `No trash pickup on Friday! ${req.body.trashDay.message}`
-    //     await email.sendEmail(message);
-    // }
-    //  else if (checked.title === 'altWarnDay') {
-    //     const message = `No trash pickup today! ${req.body.trashDay.message}`
-    //     await email.sendEmail(message);
-    // }
-    // if (checked.title === 'gardPre') {
-    //     const message = `Don't forget to pay Victor tomorrow!`
-    //     await email.sendEmail(message);
-    // }
-    // if (checked.title === 'gardDo') {
-    //     const message = `Don't forget to pay Victor today!`
-    //     await email.sendEmail(message);
-    // }
+    if (checked.title === 'normPre' || checked.title === 'normDo') {
+        await email.sendEmail(req.body.trashDay.message);
+    } 
+    else if (checked.title === 'altWarn') {
+        const message = `No trash pickup on Friday! ${req.body.trashDay.message}`
+        await email.sendEmail(message);
+    }
+     else if (checked.title === 'altWarnDay') {
+        const message = `No trash pickup today! ${req.body.trashDay.message}`
+        await email.sendEmail(message);
+    }
+    if (checked.title === 'gardPre') {
+        const message = `Don't forget to pay Victor tomorrow!`
+        await email.sendEmail(message);
+    }
+    if (checked.title === 'gardDo') {
+        const message = `Don't forget to pay Victor today!`
+        await email.sendEmail(message);
+    }
     res.status(200).end();
 }
 
