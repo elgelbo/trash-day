@@ -1,6 +1,5 @@
-node_modules/
-variables.env
-.cache
-public/
-_archive/
 *.env
+/node_modules
+/.cache
+/public
+/_archive

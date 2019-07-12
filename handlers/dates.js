@@ -1,18 +1,19 @@
-const moment = require('moment-timezone');
+const moment = require('moment');
 const mongoose = require('mongoose');
 const Trash = require('../models/Trash');
+const now = moment();
 
 exports.convert = async (t, r) => {
-	const tDay = moment(t, "MM-DD-YYYY").tz('America/Los_Angeles').add(8, "hours");
-	const rDay = moment(r, "MM-DD-YYYY").tz('America/Los_Angeles').add(8, "hours");
+	const tDay = moment(t, "MM-DD-YYYY").add(8, "hours");
+	const rDay = moment(r, "MM-DD-YYYY").add(8, "hours");
 	return [tDay, rDay];
 }
 
 const getFri = (it) => {
-	const theEnd = moment().tz('America/Los_Angeles').clone().endOf('month');
+	const theEnd = moment().clone().endOf('month');
 	while (theEnd.day() !== 5) {
 		theEnd.subtract(1, 'day');
-	}
+	} 
 	if (it.dayOfYear() === theEnd) {
 		return theEnd.dayOfYear();
 	} else if (theEnd.clone().subtract(1, 'w').dayOfYear()){
@@ -25,8 +26,8 @@ exports.format = async (t, r) => {
 	const rDay = r;
 	const lastFri = getFri(rDay.clone());
 	var payVictor = lastFri === tDay.dayOfYear() ? true : false;
-	var tHr = moment().tz('America/Los_Angeles').diff(tDay, "hours", true);
-	var rHr = moment().tz('America/Los_Angeles').diff(rDay, "hours", true);
+	var tHr = moment().diff(tDay, "hours", true);
+	var rHr = moment().diff(rDay, "hours", true);
 	var both = tHr === rHr ? true : false;
 	var holiday = tDay.day() != 5 ? true : false;
 	var tDayTill = parseFloat(tHr / 24);
@@ -84,9 +85,9 @@ exports.setMessage = (trashDay) => {
 }
 
 exports.saveDay = async (date, message, lastScrape) => {
-	const update = moment().tz('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a z');
-	if (lastScrape === true) {
-		const data = await Trash.findOneAndUpdate({ name: 'mytrashday' }, { update, scrape: update, message, holiday: date.holiday, payVictor: date.payVictor, trash: date.trash, recycling: date.recycling }, { upsert: true, new: true }).exec();
+	const update = moment().format('MMMM Do YYYY, h:mm:ss a');
+if (lastScrape === true) {
+	const data = await Trash.findOneAndUpdate({ name: 'mytrashday' }, { update, scrape: update, message, holiday: date.holiday, payVictor: date.payVictor, trash: date.trash, recycling: date.recycling }, { upsert: true, new: true }).exec();
 		return data;
 	} else {
 		const data = await Trash.findOneAndUpdate({ name: 'mytrashday' }, { update, message, holiday: date.holiday, trash: date.trash, recycling: date.recycling }, { upsert: true, new: true }).exec();
@@ -103,6 +104,6 @@ exports.getDaybyName = async (name) => {
 
 exports.checkCurrentDay = async (date) => {
 	const newDay = moment(date).add(36, 'h');;
-	const check = moment().tz('America/Los_Angeles').isBefore(newDay);
+	const check = moment().isBefore(newDay);
 	return check;
 };

@@ -1,4 +1,4 @@
-const moment = require('moment-timezone');
+const moment = require('moment');
 const email = require('../handlers/email')
 
 altTill = (now) => {
@@ -11,15 +11,15 @@ altTill = (now) => {
     }
 }
 
-var check = exports.check = (day) => {   
+var check = exports.check = (day) => {
+	// LOOK IN HERE FOR ERRS
     const timeTill = day.trash.hrsTill;
-    const now = moment().tz('America/Los_Angeles');
     if (day.payVictor === true) {
         if (timeTill >= -38.5 && timeTill <= -37.5) {
             return {
                 title: 'gardPre',
                 trigger: true,
-                current: now.format('MMMM Do YYYY, h:mm:ss a z'),
+                current: moment().format('MMMM Do YYYY, h:mm:ss a'),
                 tMinus: timeTill,
                 it: day.trash.date
             };
@@ -28,7 +28,7 @@ var check = exports.check = (day) => {
             return {
                 title: 'gardDo',
                 trigger: true,
-                current: now.format('MMMM Do YYYY, h:mm:ss a z'),
+                current: moment().format('MMMM Do YYYY, h:mm:ss a'),
                 tMinus: timeTill,
                 it: day.trash.date
             };
@@ -38,7 +38,7 @@ var check = exports.check = (day) => {
         return {
             title: 'normPre',
             trigger: true,
-            current: now.format('MMMM Do YYYY, h:mm:ss a z'),
+            current: moment().format('MMMM Do YYYY, h:mm:ss a z'),
             tMinus: timeTill,
             it: day.trash.date
         };
@@ -46,25 +46,25 @@ var check = exports.check = (day) => {
         return {
             title: 'normDo',
             trigger: true,
-            current: now.format('MMMM Do YYYY, h:mm:ss a z'),
+            current: moment().format('MMMM Do YYYY, h:mm:ss a z'),
             tMinus: timeTill,
             it: day.trash.date
         };
     } else if (day.holiday === true) {
-        const alty = altTill(now);
-        if (now.day() === 4 && alty >= -14.5 && alty <= -13.5) {
+        const alty = altTill(moment());
+        if (moment().day() === 4 && alty >= -14.5 && alty <= -13.5) {
             return {
                 title: 'altWarn',
                 trigger: true,
-                current: now.format('MMMM Do YYYY, h:mm:ss a z'),
+                current: moment().format('MMMM Do YYYY, h:mm:ss a z'),
                 tMinus: timeTill,
                 it: day.trash.date
             };
-        } else if (now.day() === 5 && alty >= -1.5 && alty <= -0.5) {
+        } else if (moment().day() === 5 && alty >= -1.5 && alty <= -0.5) {
             return {
                 title: 'altWarnDay',
                 trigger: true,
-                current: now.format('MMMM Do YYYY, h:mm:ss a z'),
+                current: moment().format('MMMM Do YYYY, h:mm:ss a z'),
                 tMinus: timeTill,
                 it: day.trash.date
             };
@@ -72,7 +72,7 @@ var check = exports.check = (day) => {
             return {
                 title: 'none',
                 trigger: false,
-                current: now.format('MMMM Do YYYY, h:mm:ss a z'),
+                current: moment().format('MMMM Do YYYY, h:mm:ss a z'),
                 tMinus: timeTill,
                 it: day.trash.date
             };
@@ -81,16 +81,18 @@ var check = exports.check = (day) => {
         return {
             title: 'none',
             trigger: false,
-            current: now.format('MMMM Do YYYY, h:mm:ss a z'),
+            current: moment().format('MMMM Do YYYY, h:mm:ss a z'),
             tMinus: timeTill,
             it: day.trash.date
         };
     }
 }
 // TODO: SET UP EMAIL TRANSPORT
-exports.checkWindow = async (req, res) => {
+exports.checkWindow = async (req, res, next) => {
     const checked = await check(req.body.trashDay);
+    // DEBUG FOR SERVER
     console.log(checked);
+    // TODO: MOVE TO MSG GENERATOR
     if (checked.title === 'normPre' || checked.title === 'normDo') {
         await email.sendEmail(req.body.trashDay.message);
     } 
@@ -110,12 +112,5 @@ exports.checkWindow = async (req, res) => {
         const message = `Don't forget to pay Victor today!`
         await email.sendEmail(message);
     }
-    res.status(200).end();
-}
-
-exports.testEmail = async (req, res) => {
-    const checked = await check(req.body.trashDay);
-    const message = `TEST! ${req.body.trashDay.message}`
-    await email.sendEmail(message);
-    res.status(200).end();
+    next();
 }
