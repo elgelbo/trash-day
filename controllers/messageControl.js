@@ -88,9 +88,11 @@ var check = exports.check = (day) => {
     }
 }
 // TODO: SET UP EMAIL TRANSPORT
-exports.checkWindow = async (req, res) => {
+exports.checkWindow = async (req, res, next) => {
     const checked = await check(req.body.trashDay);
+    // DEBUG FOR SERVER
     console.log(checked);
+    // TODO: MOVE TO MSG GENERATOR
     if (checked.title === 'normPre' || checked.title === 'normDo') {
         await email.sendEmail(req.body.trashDay.message);
     } 
@@ -110,12 +112,5 @@ exports.checkWindow = async (req, res) => {
         const message = `Don't forget to pay Victor today!`
         await email.sendEmail(message);
     }
-    res.status(200).end();
-}
-
-exports.testEmail = async (req, res) => {
-    const checked = await check(req.body.trashDay);
-    const message = `TEST! ${req.body.trashDay.message}`
-    await email.sendEmail(message);
-    res.status(200).end();
+    next();
 }

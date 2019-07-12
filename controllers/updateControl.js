@@ -11,9 +11,9 @@ scraper = async () => {
     return dbDates;
 }
 
-exports.update = async (req, res) => {
-    const theDay = await scraper();
-    res.status(200).end();
+exports.update = async (req, res, next) => {
+    await scraper();
+    next();
 }
 
 exports.check = async (req, res, next) => {
