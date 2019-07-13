@@ -94,23 +94,23 @@ exports.checkWindow = async (req, res, next) => {
     console.log(checked);
     // TODO: MOVE TO MSG GENERATOR
     if (checked.title === 'normPre' || checked.title === 'normDo') {
-        await email.sendEmail(req.body.trashDay.message);
+        await email.sendEmail(req.body.trashDay.message, process.env.EMAIL_TO);
     } 
     else if (checked.title === 'altWarn') {
         const message = `No trash pickup on Friday! ${req.body.trashDay.message}`
-        await email.sendEmail(message);
+        await email.sendEmail(message, process.env.EMAIL_TO);
     }
      else if (checked.title === 'altWarnDay') {
         const message = `No trash pickup today! ${req.body.trashDay.message}`
-        await email.sendEmail(message);
+        await email.sendEmail(message, process.env.EMAIL_TO);
     }
     if (checked.title === 'gardPre') {
         const message = `Don't forget to pay Victor tomorrow!`
-        await email.sendEmail(message);
+        await email.sendEmail(message, process.env.EMAIL_TO);
     }
     if (checked.title === 'gardDo') {
         const message = `Don't forget to pay Victor today!`
-        await email.sendEmail(message);
+        await email.sendEmail(message, process.env.EMAIL_TO);
     }
     next();
 }
