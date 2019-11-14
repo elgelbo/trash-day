@@ -2,6 +2,14 @@ extends layout
 
 block content
   p=Txt
-
+  h1 Trash
+  pre Next Recycling is on #{Obj.trash.fromNow}
+  h1 Recycling
+  pre= Obj.recycling.isTrue
+  pre Next Recycling is on #{Obj.recycling.fromNow}
+  h1 Pay Victor
+  pre= Obj.payVictor
+  h1 Holiday
+  pre= Obj.holiday
 block append scripts
   script(src="main.js")

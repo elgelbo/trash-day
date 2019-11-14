@@ -71,6 +71,7 @@ exports.format = async (t, r) => {
 }
 
 exports.setMessage = (trashDay) => {
+	// FLAG
 	var message = '';
 	message += `Trash day ${trashDay.trash.fromNow}. `
 	if (trashDay.recycling.isTrue === true) {
