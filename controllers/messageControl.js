@@ -26,13 +26,7 @@ altTill = now => {
 
 var check = (exports.check = day => {
   // CHECK WINDOWS FOR MESSAGES
-
   const timeTill = day.trash.hrsTill;
-  console.log(timeTill);
-  console.log(day);
-  console.log("now: " + moment());
-  console.log("day: " + moment().day());
-
   if (day.payVictor === true) {
     if (timeTill >= -38.5 && timeTill <= -37.5) {
       return {
@@ -51,7 +45,13 @@ var check = (exports.check = day => {
         it: day.trash.date
       };
     } else {
-      return "nah";
+      return {
+        title: "none",
+        trigger: false,
+        current: moment().format("MMMM Do YYYY, h:mm:ss a z"),
+        tMinus: timeTill,
+        it: day.trash.date
+      };
     }
   } else {
     if (timeTill >= -14.5 && timeTill <= -13.5) {
@@ -71,7 +71,13 @@ var check = (exports.check = day => {
         it: day.trash.date
       };
     } else {
-      return "nah2";
+      return {
+        title: "none",
+        trigger: false,
+        current: moment().format("MMMM Do YYYY, h:mm:ss a z"),
+        tMinus: timeTill,
+        it: day.trash.date
+      };
     }
   }
 });
@@ -84,7 +90,6 @@ exports.checkWindow = async (req, res, next) => {
   // FLAG
   if (checked.title === "gardPre") {
     const message =  `Don't forget to pay Victor tomorrow!`;
-    console.log(checked.title + ": " + message);
     await email.sendEmail(message, process.env.EMAIL_TO);
   }
   if (checked.title === "gardDo") {
