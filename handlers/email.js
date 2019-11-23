@@ -1,11 +1,10 @@
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_KEY);
 // TODO: SET UP EMAIL TRANSPORT
-exports.sendEmail = async (message, recips) => {
-  // console.log(message);
+exports.sendEmail = async (message) => {
   const emails = [
     {
-      to: recips,
+      to: process.env.EMAIL_TO.split(',', ),
       from: process.env.EMAIL_FROM,
       subject: `${message}` + '💩 💩 💩 💩 💩',
       text: `${message}` + '💩 💩 💩 💩 💩',
@@ -78,6 +77,29 @@ exports.sendEmail = async (message, recips) => {
         '</body>' +
         '' +
         '</html>' // html body,
+    }
+  ];
+  sgMail.send(emails, (error, result) => {
+    if (error) {
+      console.error(error.toString());
+      const { message, code, response } = error;
+      const { headers, body } = response;
+    }
+    else {
+      console.log('Sent');
+    }
+  });
+}
+
+
+exports.testEmail = async (message) => {
+  const toList = process.env.EMAIL_TO.split(',', );  
+  const emails = [
+    {
+      to: toList,
+      from: process.env.EMAIL_FROM,
+      subject: `${message}` + '💩 💩 💩 💩 💩',
+      text: `${message}` + '💩 💩 💩 💩 💩'
     }
   ];
   sgMail.send(emails, (error, result) => {

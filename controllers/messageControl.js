@@ -90,20 +90,24 @@ exports.checkWindow = async (req, res, next) => {
   // FLAG
   if (checked.title === "gardPre") {
     const message =  `Don't forget to pay Victor tomorrow!`;
-    await email.sendEmail(message, process.env.EMAIL_TO);
+    await email.sendEmail(message);
   }
   if (checked.title === "gardDo") {
     const message = `Don't forget to pay Victor today!`;
-    await email.sendEmail(message, process.env.EMAIL_TO);
+    await email.sendEmail(message);
   }
   if (checked.title === "normPre" || checked.title === "normDo") {
-    await email.sendEmail(req.body.trashDay.message, process.env.EMAIL_TO);
+    await email.sendEmail(req.body.trashDay.message);
   } else if (checked.title === "altWarn") {
     const message = `No trash pickup on Friday! ${req.body.trashDay.message}`;
-    await email.sendEmail(message, process.env.EMAIL_TO);
+    await email.sendEmail(message);
   } else if (checked.title === "altWarnDay") {
     const message = `No trash pickup today! ${req.body.trashDay.message}`;
-    await email.sendEmail(message, process.env.EMAIL_TO);
+    await email.sendEmail(message);
   }
   next();
 };
+
+exports.testMail = async (req, res, next) => {
+  await email.testEmail(req.body.trashDay.message);
+}
