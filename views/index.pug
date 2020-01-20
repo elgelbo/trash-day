@@ -3,12 +3,14 @@ extends layout
 block content
   p=Txt
   h1 Trash
-  pre Next Trash Day #{Obj.trash.fromNow}.
+  p Next Trash Day #{Obj.trash.fromNow}.
+  pre=Obj.trash.date
   h1 Recycling
   pre= Obj.recycling.isTrue
-  pre Next Recycling Day #{Obj.recycling.fromNow}.
+  p Next Recycling Day #{Obj.recycling.fromNow}.
+  pre=Obj.recycling.date
   h1 Pay Victor
-  pre= Obj.payVictor
+  p= Obj.payVictor
   h1 Holiday
   pre= Obj.holiday
 block append scripts

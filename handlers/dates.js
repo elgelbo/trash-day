@@ -10,10 +10,11 @@ exports.convert = async (t, r) => {
 }
 
 const getFri = (it) => {
-	const theEnd = moment().clone().endOf('month');
+	
+	const theEnd = moment().clone().endOf('month');	
 	while (theEnd.day() !== 5) {
 		theEnd.subtract(1, 'day');
-	} 
+	}
 	if (it.dayOfYear() === theEnd) {
 		return theEnd.dayOfYear();
 	} else if (theEnd.clone().subtract(1, 'w').dayOfYear()){
@@ -24,12 +25,17 @@ const getFri = (it) => {
 exports.format = async (t, r) => {
 	const tDay = t;
 	const rDay = r;
-	const lastFri = getFri(rDay.clone());
-	var payVictor = lastFri === tDay.dayOfYear() ? true : false;
 	var tHr = moment().diff(tDay, "hours", true);
 	var rHr = moment().diff(rDay, "hours", true);
 	var both = tHr === rHr ? true : false;
 	var holiday = tDay.day() != 5 ? true : false;
+	const lastFri = getFri(rDay.clone());
+	var checkVictor = lastFri === tDay.dayOfYear() ? true : false;
+	if (both) {
+		payVictor = checkVictor;
+	} else {
+		payVictor = false;
+	};
 	var tDayTill = parseFloat(tHr / 24);
 	var rDayTill = parseFloat(rHr / 24);
 	const data = {

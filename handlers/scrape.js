@@ -12,19 +12,20 @@ exports.pups = async () => {
     await page.goto(url, {
       waitUntil: 'load'
     });
-    const streetNumber = '#pgid\\:fmId\\:j_id44\\:j_id45\\:siteStreetNumberId';
+    const streetNumber = '#pgid\\:fmId\\:j_id47\\:j_id48\\:siteStreetNumberId';
     await page.type(streetNumber, '5023');
 
-    const streetName = '#pgid\\:fmId\\:j_id44\\:j_id45\\:siteStreetNameId';
+    const streetName = '#pgid\\:fmId\\:j_id47\\:j_id48\\:siteStreetNameId';
     await page.type(streetName, 'Collier');
 
     await page.click('#SearchSiteBtn');
 
-    const btn = '#pgid\\:fmId\\:j_id44\\:j_id45\\:j_id62 > div > a';
+    const btn = '#pgid\\:fmId\\:j_id47\\:j_id48\\:j_id65 > div > a';    
     await page.waitFor(btn);
     await page.click(btn);
 
-    const nxt = '#screen_0_sitesearch > div > div > div.twelve.columns.l-margin-bl.l-padding-lm.l-padding-rm.l-padding-bm a'
+    const nxt = '#pgid\\:fmId\\:ActSubmit1'
+    
     await page.waitFor(1000);
     await page.click(nxt);
     await page.waitFor(1000);
