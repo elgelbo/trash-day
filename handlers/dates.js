@@ -79,14 +79,18 @@ exports.format = async (t, r) => {
 exports.setMessage = (trashDay) => {
 	// FLAG
 	var message = '';
+	// message += JSON.stringify(trashDay)
 	message += `Trash day ${trashDay.trash.fromNow}. `
 	if (trashDay.recycling.isTrue === true) {
 		message += `Don't forget the recycling!`
-	} else {
+	} 
+	else {
 		message += `No recycling this week.`
 	}
 	if (trashDay.payVictor === true) {
 		message += ` Pay Victor this week!`;
+	} else {
+		message += ` Don't pay Victor this week.`
 	}
 	return message;
 }
