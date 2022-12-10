@@ -17,7 +17,7 @@
     "@sendgrid/mail": "^6.4.0",
     "axios": "^0.19.0",
     "dotenv": "^8.0.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "moment": "^2.24.0",
     "mongoose": "^5.6.4",
     "pug": "^2.0.4",
